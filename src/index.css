@@ -33,7 +33,7 @@
 }
 
 .glass-card {
-  @apply bg-white bg-opacity-50 backdrop-blur-lg rounded-xl shadow-lg border border-white border-opacity-20;
+  @apply bg-white bg-opacity-90 backdrop-blur-lg rounded-xl shadow-lg border border-white border-opacity-20 hover:bg-opacity-95 transition-all duration-300;
 }
 
 .nav-link {

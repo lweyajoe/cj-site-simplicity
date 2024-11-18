@@ -20,7 +20,7 @@ export default {
     extend: {
       colors: {
         primary: "#1A1F2C",
-        secondary: "#D4AF37",
+        secondary: "#33C3F0",
         accent: "#E5F3FF",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
