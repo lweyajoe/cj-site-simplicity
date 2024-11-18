@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Share2, Facebook, Twitter, LinkedIn } from "lucide-react";
+import { Share2, Facebook, Twitter, Linkedin } from "lucide-react";
 
 const categories = [
   "real estate",
@@ -115,7 +115,7 @@ const BlogPost = () => {
                   <Twitter className="h-5 w-5" />
                 </Button>
                 <Button variant="ghost" size="icon">
-                  <LinkedIn className="h-5 w-5" />
+                  <Linkedin className="h-5 w-5" />
                 </Button>
                 <Button variant="ghost" size="icon">
                   <Share2 className="h-5 w-5" />
