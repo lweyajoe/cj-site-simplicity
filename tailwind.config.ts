@@ -22,15 +22,19 @@ export default {
         primary: "#1A1F2C",
         secondary: "#33C3F0",
         accent: "#E5F3FF",
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#F6F8FB",
+        foreground: "#1A1F2C",
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#F0F4F8",
+          foreground: "#64748B",
         },
+        card: {
+          DEFAULT: "#FFFFFF",
+          foreground: "#1A1F2C",
+        },
+        border: "#E2E8F0",
+        input: "#E2E8F0",
+        ring: "#33C3F0",
       },
       keyframes: {
         "fade-in": {

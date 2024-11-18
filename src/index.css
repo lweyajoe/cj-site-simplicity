@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 222 47% 11%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --secondary: 199 89% 57%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 199 89% 57%;
     --radius: 0.5rem;
   }
 
@@ -33,17 +33,33 @@
 }
 
 .glass-card {
-  @apply bg-white bg-opacity-90 backdrop-blur-lg rounded-xl shadow-lg border border-white border-opacity-20 hover:bg-opacity-95 transition-all duration-300;
+  @apply bg-white/90 backdrop-blur-lg rounded-xl shadow-lg border border-white/20 hover:bg-white/95 transition-all duration-300;
 }
 
 .nav-link {
-  @apply px-4 py-2 text-gray-700 hover:text-secondary transition-colors;
+  @apply px-4 py-2 text-primary hover:text-secondary transition-colors;
 }
 
 .service-card {
-  @apply glass-card p-6 hover:scale-105 transition-transform cursor-pointer;
+  @apply bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md border border-accent hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer;
 }
 
 .blog-card {
-  @apply glass-card p-4 mx-2;
+  @apply bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md border border-accent hover:shadow-lg transition-all duration-300;
+}
+
+.page-container {
+  @apply min-h-screen flex flex-col bg-gradient-to-br from-background to-accent/30;
+}
+
+.content-container {
+  @apply container mx-auto px-4 py-8;
+}
+
+.section-title {
+  @apply text-3xl font-bold text-primary mb-8;
+}
+
+.card-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
 }
