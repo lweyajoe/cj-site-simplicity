@@ -2,15 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
+import { ReactQuillEditor } from "@/components/ui/reactQuillEditor"; // Import the new ReactQuillEditor component
 
 const categories = [
   "real estate",
@@ -92,17 +86,16 @@ const Admin = () => {
             </Select>
           </div>
 
-          {/* Content Textarea */}
+          {/* Content Textarea (Rich Text Editor) */}
           <div>
             <label htmlFor="content" className="block text-sm font-medium mb-2">
               Content
             </label>
-            <Textarea
+            <ReactQuillEditor
               id="content"
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={setContent}
               placeholder="Write your blog post content here..."
-              className="min-h-[400px]"
               required
             />
           </div>
