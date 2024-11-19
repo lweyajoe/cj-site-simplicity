@@ -1,9 +1,23 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { ChevronDown, ShoppingCart, Phone } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ChevronDown, ShoppingCart, Phone, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    toast({
+      title: "Success",
+      description: "You have been logged out successfully.",
+    });
+    navigate("/login");
+  };
 
   return (
     <nav className="bg-white shadow-md">
@@ -50,20 +64,25 @@ const Navbar = () => {
 
           {/* Right Navigation */}
           <div className="flex items-center space-x-4">
-            <Link
-              to="/shop"
-              className="nav-link flex items-center"
-            >
+            <Link to="/shop" className="nav-link flex items-center">
               <ShoppingCart className="mr-1 h-4 w-4" />
               Shop
             </Link>
-            <Link
-              to="/contact"
-              className="nav-link flex items-center"
-            >
+            <Link to="/contact" className="nav-link flex items-center">
               <Phone className="mr-1 h-4 w-4" />
               Contact
             </Link>
+            {isAuthenticated && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </Button>
+            )}
           </div>
         </div>
       </div>

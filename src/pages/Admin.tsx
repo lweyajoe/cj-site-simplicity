@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { ReactQuillEditor } from "@/components/ui/reactQuillEditor"; // Import the new ReactQuillEditor component
+import { ReactQuillEditor } from "@/components/ui/reactQuillEditor";
+import Navbar from "@/components/layout/Navbar";
 
 const categories = [
   "real estate",
@@ -23,7 +24,6 @@ const Admin = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Improved handleSubmit to make an API call and handle responses
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Make an API call to save the blog post
@@ -49,62 +49,66 @@ const Admin = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="content-container max-w-4xl">
-        <h1 className="section-title">Create New Blog Post</h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title Input */}
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium mb-2">
-              Title
-            </label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter blog post title"
-              required
-            />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-accent/30">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 flex-grow">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold">Create New Blog Post</h1>
+            <Button variant="outline" onClick={() => navigate("/admin/dashboard")}>
+              Back to Dashboard
+            </Button>
           </div>
+          <div className="glass-card p-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium mb-2">
+                  Title
+                </label>
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Enter blog post title"
+                  required
+                />
+              </div>
 
-          {/* Category Select */}
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium mb-2">
-              Category
-            </label>
-            <Select onValueChange={setCategory} required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium mb-2">
+                  Category
+                </label>
+                <Select onValueChange={setCategory} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label htmlFor="content" className="block text-sm font-medium mb-2">
+                  Content
+                </label>
+                <ReactQuillEditor
+                  value={content}
+                  onChange={setContent}
+                  placeholder="Write your blog post content here..."
+                />
+              </div>
+
+              <Button type="submit" className="w-full">
+                Publish Post
+              </Button>
+            </form>
           </div>
-
-          {/* Content Textarea (Rich Text Editor) */}
-          <div>
-            <label htmlFor="content" className="block text-sm font-medium mb-2">
-              Content
-            </label>
-            <ReactQuillEditor
-              id="content"
-              value={content}
-              onChange={setContent}
-              placeholder="Write your blog post content here..."
-              required
-            />
-          </div>
-
-          {/* Submit Button */}
-          <Button type="submit" className="w-full">
-            Publish Post
-          </Button>
-        </form>
+        </div>
       </div>
     </div>
   );

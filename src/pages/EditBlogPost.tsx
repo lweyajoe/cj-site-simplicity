@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { ReactQuillEditor } from "@/components/ui/reactQuillEditor";
+import Navbar from "@/components/layout/Navbar";
 
 const categories = [
   "real estate",
@@ -25,7 +26,6 @@ const EditBlogPost = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // TODO: Fetch post data based on ID
     const fetchPost = async () => {
       try {
         // Placeholder for API call
@@ -73,73 +73,77 @@ const EditBlogPost = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="content-container max-w-4xl">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Edit Blog Post</h1>
-          <Button variant="outline" onClick={() => navigate("/admin/dashboard")}>
-            Back to Dashboard
-          </Button>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-accent/30">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 flex-grow">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold">Edit Blog Post</h1>
+            <Button variant="outline" onClick={() => navigate("/admin/dashboard")}>
+              Back to Dashboard
+            </Button>
+          </div>
+
+          <div className="glass-card p-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium mb-2">
+                  Title
+                </label>
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Enter blog post title"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium mb-2">
+                  Category
+                </label>
+                <Select value={category} onValueChange={setCategory} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label htmlFor="content" className="block text-sm font-medium mb-2">
+                  Content
+                </label>
+                <ReactQuillEditor
+                  value={content}
+                  onChange={setContent}
+                  placeholder="Write your blog post content here..."
+                />
+              </div>
+
+              <div className="flex gap-4">
+                <Button type="submit" className="flex-1">
+                  Update Post
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => navigate("/admin/dashboard")}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium mb-2">
-              Title
-            </label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter blog post title"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium mb-2">
-              Category
-            </label>
-            <Select value={category} onValueChange={setCategory} required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <label htmlFor="content" className="block text-sm font-medium mb-2">
-              Content
-            </label>
-            <ReactQuillEditor
-              value={content}
-              onChange={setContent}
-              placeholder="Write your blog post content here..."
-              required
-            />
-          </div>
-
-          <div className="flex gap-4">
-            <Button type="submit" className="flex-1">
-              Update Post
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate("/admin/dashboard")}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-          </div>
-        </form>
       </div>
     </div>
   );
