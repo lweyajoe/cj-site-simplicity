@@ -5,9 +5,17 @@ import Footer from "@/components/layout/Footer";
 
 const BlogPost = () => {
   const { id: slug } = useParams();
-  const [post, setPost] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [latestPosts, setLatestPosts] = useState([]);
+  const [post, setPost] = useState<any>(null);
+  const [categories] = useState([
+    "real estate",
+    "tax",
+    "insurance",
+    "personal finance",
+    "treasury bills and bonds",
+    "start-ups",
+    "unit trusts",
+  ]);
+  const [latestPosts, setLatestPosts] = useState<any[]>([]);
 
   useEffect(() => {
     // Fetch the current post
@@ -16,15 +24,6 @@ const BlogPost = () => {
       if (response.ok) {
         const data = await response.json();
         setPost(data);
-      }
-    };
-
-    // Fetch categories for the sidebar
-    const fetchCategories = async () => {
-      const response = await fetch("http://localhost/backend/api.php?categories=true");
-      if (response.ok) {
-        const data = await response.json();
-        setCategories(data);
       }
     };
 
@@ -38,7 +37,6 @@ const BlogPost = () => {
     };
 
     fetchPost();
-    fetchCategories();
     fetchLatestPosts();
   }, [slug]);
 
@@ -60,31 +58,52 @@ const BlogPost = () => {
               <div className="prose max-w-none">{post.content}</div>
             </article>
           </div>
+          
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-8">
-            <div>
-              <h2 className="text-xl font-semibold">Categories</h2>
-              <ul>
-                {categories.map((cat) => (
-                  <li key={cat.category} className="mb-2">
-                    <a href={`/blog/category/${cat.category}`} className="text-blue-600 hover:underline">
-                      {cat.category}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            {/* Categories Sidebar */}
+            <div className="glass-card p-6 sticky top-4">
+              <h3 className="text-xl font-semibold mb-4">Read my articles on</h3>
+              <nav>
+                <ul className="space-y-2">
+                  {categories.map((category) => (
+                    <li key={category}>
+                      <a
+                        href={`/blog/category/${category}`}
+                        className="block py-2 text-secondary hover:text-primary transition-colors"
+                      >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             </div>
-            <div>
-              <h2 className="text-xl font-semibold">Latest Posts</h2>
-              <ul>
-                {latestPosts.map((post) => (
-                  <li key={post.id} className="mb-2">
-                    <a href={`/blog/${post.slug}`} className="text-blue-600 hover:underline">
-                      {post.title}
-                    </a>
-                  </li>
+
+            {/* Latest Posts */}
+            <div className="glass-card p-6">
+              <h3 className="text-xl font-semibold mb-4">Latest Posts</h3>
+              <div className="space-y-4">
+                {latestPosts.map((latestPost) => (
+                  <a
+                    key={latestPost.id}
+                    href={`/blog/${latestPost.slug}`}
+                    className="block group"
+                  >
+                    <div className="space-y-1">
+                      <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
+                        {latestPost.category}
+                      </span>
+                      <h4 className="text-sm font-medium group-hover:text-secondary transition-colors">
+                        {latestPost.title}
+                      </h4>
+                      <span className="text-xs text-muted-foreground">
+                        {latestPost.created_at}
+                      </span>
+                    </div>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </div>
