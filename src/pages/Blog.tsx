@@ -14,33 +14,27 @@ const categories = [
   "unit trusts"
 ];
 
-// Sample data for development
-const samplePosts = [
-  {
-    id: 1,
-    slug: "sample-post-1",
-    title: "Understanding Real Estate Investment",
-    category: "real estate",
-    excerpt: "Learn the basics of real estate investment...",
-    date: "2024-03-18",
-    image: "/placeholder.svg"
-  },
-  {
-    id: 2,
-    slug: "sample-post-2",
-    title: "Tax Planning Strategies",
-    category: "tax",
-    excerpt: "Essential tax planning strategies...",
-    date: "2024-03-17",
-    image: "/placeholder.svg"
-  }
-];
-
 const Blog = () => {
-  const [posts, setPosts] = useState(samplePosts);
-  const [filteredPosts, setFilteredPosts] = useState(samplePosts);
-  const [latestArticles, setLatestArticles] = useState(samplePosts);
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [latestArticles, setLatestArticles] = useState([]);
   const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("https://cjblog/cpajoe.co.ke/backend/api.php?action=fetchPosts");
+        const data = await response.json();
+        setPosts(data);
+        setFilteredPosts(data);
+        setLatestArticles(data.slice(0, 5)); // Get latest 5 posts
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   // Filter posts based on selected category
   useEffect(() => {
@@ -69,7 +63,7 @@ const Blog = () => {
                   <Link to={`/blog/${post.slug}`} key={post.id}>
                     <article className="glass-card hover:shadow-lg transition-shadow duration-300">
                       <img
-                        src={post.image}
+                        src={post.image || "/placeholder.svg"}
                         alt={post.title}
                         className="w-full h-48 object-cover rounded-t-xl"
                       />

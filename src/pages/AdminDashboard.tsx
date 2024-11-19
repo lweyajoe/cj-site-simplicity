@@ -6,26 +6,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/layout/Navbar";
 
-// Sample data structure - replace with actual data from backend
-const samplePosts = [
-  {
-    id: 1,
-    title: "Understanding Real Estate Investment",
-    category: "real estate",
-    created_at: "2024-03-18",
-    status: "published"
-  },
-  {
-    id: 2,
-    title: "Tax Planning Strategies",
-    category: "tax",
-    created_at: "2024-03-17",
-    status: "draft"
-  },
-];
-
 const AdminDashboard = () => {
-  const [posts] = useState(samplePosts);
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -47,8 +29,9 @@ const AdminDashboard = () => {
             title: "Success",
             description: "Post deleted successfully",
           });
-          // Refresh the posts list
-          // You'll need to implement this when the backend is ready
+          // Refresh posts list after successful deletion
+          const updatedPosts = posts.filter(post => post.id !== postId);
+          setPosts(updatedPosts);
         } else {
           throw new Error('Failed to delete post');
         }
