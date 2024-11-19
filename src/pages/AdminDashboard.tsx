@@ -38,12 +38,20 @@ const AdminDashboard = () => {
     
     if (confirmDelete) {
       try {
-        // Placeholder for API call
-        // await deletePost(postId);
-        toast({
-          title: "Success",
-          description: "Post deleted successfully",
+        const response = await fetch(`https://cjblog/cpajoe.co.ke/backend/api.php?action=deletePost&id=${postId}`, {
+          method: 'DELETE',
         });
+        
+        if (response.ok) {
+          toast({
+            title: "Success",
+            description: "Post deleted successfully",
+          });
+          // Refresh the posts list
+          // You'll need to implement this when the backend is ready
+        } else {
+          throw new Error('Failed to delete post');
+        }
       } catch (error) {
         toast({
           title: "Error",

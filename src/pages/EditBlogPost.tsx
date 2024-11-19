@@ -28,17 +28,11 @@ const EditBlogPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        // Placeholder for API call
-        // const response = await fetch(`/api/posts/${id}`);
-        // const data = await response.json();
-        // setTitle(data.title);
-        // setContent(data.content);
-        // setCategory(data.category);
-        
-        // Using sample data for now
-        setTitle("Sample Post Title");
-        setContent("Sample post content...");
-        setCategory("real estate");
+        const response = await fetch(`https://cjblog/cpajoe.co.ke/backend/api.php?action=fetchPost&id=${id}`);
+        const data = await response.json();
+        setTitle(data.title);
+        setContent(data.content);
+        setCategory(data.category);
       } catch (error) {
         toast({
           title: "Error",
@@ -55,14 +49,23 @@ const EditBlogPost = () => {
     e.preventDefault();
     
     try {
-      // TODO: Implement actual update functionality
-      // await updatePost(id, { title, content, category });
-      
-      toast({
-        title: "Success!",
-        description: "Blog post updated successfully.",
+      const response = await fetch(`https://cjblog/cpajoe.co.ke/backend/api.php?action=updatePost&id=${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, content, category }),
       });
-      navigate("/admin/dashboard");
+
+      if (response.ok) {
+        toast({
+          title: "Success!",
+          description: "Blog post updated successfully.",
+        });
+        navigate("/admin/dashboard");
+      } else {
+        throw new Error('Failed to update post');
+      }
     } catch (error) {
       toast({
         title: "Error",
