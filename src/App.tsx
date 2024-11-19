@@ -13,6 +13,8 @@ import Contact from "./pages/Contact";
 import Shop from "./pages/Shop";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import EditBlogPost from "./pages/EditBlogPost";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,22 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditBlogPost />
               </ProtectedRoute>
             }
           />
