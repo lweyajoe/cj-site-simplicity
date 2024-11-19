@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import the default theme for Quill
+import "react-quill/dist/quill.snow.css";
 import { cn } from "@/lib/utils";
 
 export interface ReactQuillEditorProps {
@@ -9,13 +9,15 @@ export interface ReactQuillEditorProps {
   onChange: (value: string) => void;
   placeholder?: string;
   required?: boolean;
+  id?: string;
 }
 
-const ReactQuillEditor = React.forwardRef<HTMLDivElement, ReactQuillEditorProps>(
-  ({ className, value, onChange, placeholder, required }, ref) => {
+const ReactQuillEditor = React.forwardRef<ReactQuill, ReactQuillEditorProps>(
+  ({ className, value, onChange, placeholder, required, id }, ref) => {
     return (
       <ReactQuill
         ref={ref}
+        id={id}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
