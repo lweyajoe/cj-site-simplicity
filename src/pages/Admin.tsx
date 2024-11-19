@@ -19,7 +19,7 @@ const categories = [
   "personal finance",
   "treasury bills and bonds",
   "start-ups",
-  "unit trusts"
+  "unit trusts",
 ];
 
 const Admin = () => {
@@ -29,14 +29,29 @@ const Admin = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Improved handleSubmit to make an API call and handle responses
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically make an API call to save the blog post
-    toast({
-      title: "Success!",
-      description: "Blog post published successfully.",
+    // Make an API call to save the blog post
+    const response = await fetch("http://localhost/backend/api.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, content, category }),
     });
-    navigate("/blog");
+
+    if (response.ok) {
+      const { slug } = await response.json();
+      toast({
+        title: "Success!",
+        description: `Blog post published successfully. View it at /blog/${slug}`,
+      });
+      navigate("/blog");
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to create blog post. Please try again.",
+      });
+    }
   };
 
   return (
@@ -44,6 +59,7 @@ const Admin = () => {
       <div className="content-container max-w-4xl">
         <h1 className="section-title">Create New Blog Post</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Title Input */}
           <div>
             <label htmlFor="title" className="block text-sm font-medium mb-2">
               Title
@@ -57,6 +73,7 @@ const Admin = () => {
             />
           </div>
 
+          {/* Category Select */}
           <div>
             <label htmlFor="category" className="block text-sm font-medium mb-2">
               Category
@@ -75,6 +92,7 @@ const Admin = () => {
             </Select>
           </div>
 
+          {/* Content Textarea */}
           <div>
             <label htmlFor="content" className="block text-sm font-medium mb-2">
               Content
@@ -89,6 +107,7 @@ const Admin = () => {
             />
           </div>
 
+          {/* Submit Button */}
           <Button type="submit" className="w-full">
             Publish Post
           </Button>
