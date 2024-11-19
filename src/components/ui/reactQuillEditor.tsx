@@ -8,11 +8,10 @@ export interface ReactQuillEditorProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  required?: boolean;
 }
 
 const ReactQuillEditor = React.forwardRef<ReactQuill, ReactQuillEditorProps>(
-  ({ className, value, onChange, placeholder, required }, ref) => {
+  ({ className, value, onChange, placeholder }, ref) => {
     return (
       <ReactQuill
         ref={ref}
@@ -23,7 +22,6 @@ const ReactQuillEditor = React.forwardRef<ReactQuill, ReactQuillEditorProps>(
           "min-h-[400px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
-        required={required}
       />
     );
   }

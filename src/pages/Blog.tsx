@@ -14,34 +14,33 @@ const categories = [
   "unit trusts"
 ];
 
+// Sample data for development
+const samplePosts = [
+  {
+    id: 1,
+    slug: "sample-post-1",
+    title: "Understanding Real Estate Investment",
+    category: "real estate",
+    excerpt: "Learn the basics of real estate investment...",
+    date: "2024-03-18",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 2,
+    slug: "sample-post-2",
+    title: "Tax Planning Strategies",
+    category: "tax",
+    excerpt: "Essential tax planning strategies...",
+    date: "2024-03-17",
+    image: "/placeholder.svg"
+  }
+];
+
 const Blog = () => {
-  const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
-  const [latestArticles, setLatestArticles] = useState([]);
+  const [posts, setPosts] = useState(samplePosts);
+  const [filteredPosts, setFilteredPosts] = useState(samplePosts);
+  const [latestArticles, setLatestArticles] = useState(samplePosts);
   const [searchParams] = useSearchParams();
-
-  // Fetch all posts
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch("http://localhost/backend/api.php");
-      const data = await response.json();
-      setPosts(data);
-      setFilteredPosts(data);
-    };
-
-    fetchPosts();
-  }, []);
-
-  // Fetch latest articles
-  useEffect(() => {
-    const fetchLatestArticles = async () => {
-      const response = await fetch("http://localhost/backend/api.php?latest=true");
-      const data = await response.json();
-      setLatestArticles(data);  // Assumes your API returns the latest articles
-    };
-
-    fetchLatestArticles();
-  }, []);
 
   // Filter posts based on selected category
   useEffect(() => {
@@ -121,7 +120,7 @@ const Blog = () => {
                 <h3 className="text-xl font-semibold mb-4">Latest Articles</h3>
                 <div className="space-y-4">
                   {latestArticles.map((article) => (
-                    <Link key={article.id} to={`/blog/${article.id}`} className="block group">
+                    <Link key={article.id} to={`/blog/${article.slug}`} className="block group">
                       <div className="space-y-1">
                         <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
                           {article.category}
