@@ -26,8 +26,7 @@ const Admin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Make an API call to save the blog post
-    const response = await fetch("https://cjblog/cpajoe.co.ke/backend/api.php", {
+    const response = await fetch("https://cjblog.cpajoe.co.ke/backend/api.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, content, category }),

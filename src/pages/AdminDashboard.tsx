@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     
     if (confirmDelete) {
       try {
-        const response = await fetch(`https://cjblog/cpajoe.co.ke/backend/api.php?action=deletePost&id=${postId}`, {
+        const response = await fetch(`https://cjblog.cpajoe.co.ke/backend/api.php?action=deletePost&id=${postId}`, {
           method: 'DELETE',
         });
         
