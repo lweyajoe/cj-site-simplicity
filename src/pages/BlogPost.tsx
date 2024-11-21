@@ -28,7 +28,7 @@ const BlogPost = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `https://cpajoe.co.ke/backend/api.php?action=fetchPost&slug=${slug}`
+          `https://portal.omabracredit.co.ke/api.php?action=fetchPost&slug=${slug}`
         );
         setPost(response.data);
       } catch (error) {
@@ -39,7 +39,7 @@ const BlogPost = () => {
     const fetchLatestPosts = async () => {
       try {
         const response = await axios.get(
-          "https://cpajoe.co.ke/backend/api.php?action=latestPosts"
+          "https://portal.omabracredit.co.ke/api.php?action=latestPosts"
         );
         setLatestPosts(response.data);
       } catch (error) {
@@ -57,7 +57,7 @@ const BlogPost = () => {
       const fetchFilteredPosts = async () => {
         try {
           const response = await axios.get(
-            `https://cpajoe.co.ke/backend/api.php?action=fetchPostsByCategory&category=${category}`
+            `https://portal.omabracredit.co.ke/api.php?action=fetchPostsByCategory&category=${category}`
           );
           setFilteredPosts(response.data);
         } catch (error) {
@@ -76,7 +76,7 @@ const BlogPost = () => {
   // Disqus configuration
 
   const disqusConfig = {
-    url: `https://cpajoe.co.ke/blog/${slug}`,
+    url: `https://portal.omabracredit.co.ke/blog/${slug}`,
     identifier: slug,
     title: post.title,
     language: 'en',

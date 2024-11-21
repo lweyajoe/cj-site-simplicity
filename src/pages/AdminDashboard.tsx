@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     
     if (confirmDelete) {
       try {
-        const response = await fetch(`https://cpajoe.co.ke/backend/api.php?action=deletePost&id=${postId}`, {
+        const response = await fetch(`https://portal.omabracredit.co.ke/api.php?action=deletePost&id=${postId}`, {
           method: 'DELETE',
         });
         

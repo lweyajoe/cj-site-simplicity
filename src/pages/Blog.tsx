@@ -23,7 +23,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("https://cpajoe.co.ke/backend/api.php?action=fetchPosts");
+        const response = await fetch("https://portal.omabracredit.co.ke/api.php?action=fetchPosts");
         const data = await response.json();
         setPosts(data);
         setFilteredPosts(data);
