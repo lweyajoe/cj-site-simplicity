@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     
     if (confirmDelete) {
       try {
-        const response = await fetch(`https://cjblog.cpajoe.co.ke/backend/api.php?action=deletePost&id=${postId}`, {
+        const response = await fetch(`https://cpajoe.co.ke/backend/api.php?action=deletePost&id=${postId}`, {
           method: 'DELETE',
         });
         
@@ -29,7 +29,6 @@ const AdminDashboard = () => {
             title: "Success",
             description: "Post deleted successfully",
           });
-          // Refresh posts list after successful deletion
           const updatedPosts = posts.filter(post => post.id !== postId);
           setPosts(updatedPosts);
         } else {

@@ -28,7 +28,7 @@ const EditBlogPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`https://cjblog.cpajoe.co.ke/backend/api.php?action=fetchPost&id=${id}`);
+        const response = await fetch(`https://cpajoe.co.ke/backend/api.php?action=fetchPost&id=${id}`);
         const data = await response.json();
         setTitle(data.title);
         setContent(data.content);
@@ -49,7 +49,7 @@ const EditBlogPost = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`https://cjblog.cpajoe.co.ke/backend/api.php?action=updatePost&id=${id}`, {
+      const response = await fetch(`https://cpajoe.co.ke/backend/api.php?action=updatePost&id=${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

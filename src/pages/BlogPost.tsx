@@ -24,12 +24,11 @@ const BlogPost = () => {
     "unit trusts",
   ]);
 
-  // Fetch the blog post based on slug
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `https://cjblog.cpajoe.co.ke/backend/api.php?action=fetchPost&slug=${slug}`
+          `https://cpajoe.co.ke/backend/api.php?action=fetchPost&slug=${slug}`
         );
         setPost(response.data);
       } catch (error) {
@@ -37,11 +36,10 @@ const BlogPost = () => {
       }
     };
 
-    // Fetch latest posts for sidebar
     const fetchLatestPosts = async () => {
       try {
         const response = await axios.get(
-          "https://cjblog.cpajoe.co.ke/backend/api.php?action=latestPosts"
+          "https://cpajoe.co.ke/backend/api.php?action=latestPosts"
         );
         setLatestPosts(response.data);
       } catch (error) {
@@ -53,15 +51,13 @@ const BlogPost = () => {
     fetchLatestPosts();
   }, [slug]);
 
-  // Filter posts based on category from URL search params
   useEffect(() => {
     const category = searchParams.get("category");
     if (category) {
-      // Fetch posts filtered by category
       const fetchFilteredPosts = async () => {
         try {
           const response = await axios.get(
-            `https://cjblog.cpajoe.co.ke/backend/api.php?action=fetchPostsByCategory&category=${category}`
+            `https://cpajoe.co.ke/backend/api.php?action=fetchPostsByCategory&category=${category}`
           );
           setFilteredPosts(response.data);
         } catch (error) {
@@ -71,7 +67,6 @@ const BlogPost = () => {
 
       fetchFilteredPosts();
     } else {
-      // If no category selected, reset the filtered posts
       setFilteredPosts([]);
     }
   }, [searchParams]);
@@ -79,8 +74,9 @@ const BlogPost = () => {
   if (!post) return <p>Loading...</p>;
 
   // Disqus configuration
+
   const disqusConfig = {
-    url: `http://cjblog.cpajoe.co.ke/blog/${slug}`,
+    url: `https://cpajoe.co.ke/blog/${slug}`,
     identifier: slug,
     title: post.title,
     language: 'en',
