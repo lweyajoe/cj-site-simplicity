@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { ReactQuillEditor } from "@/components/ui/reactQuillEditor";
 import Navbar from "@/components/layout/Navbar";
+import { supabase } from "@/supabaseClient"; // Import Supabase client
 
 const categories = [
   "real estate",
@@ -26,24 +27,29 @@ const Admin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("https://portal.omabracredit.co.ke/api.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content, category }),
-    });
 
-    if (response.ok) {
-      const { slug } = await response.json();
+    try {
+      const slug = title.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, ""); // Generate slug from title
+      const { error } = await supabase
+        .from("blog_posts")
+        .insert([{ title, content, category, slug }]);
+
+      if (error) {
+        throw error;
+      }
+
       toast({
         title: "Success!",
         description: `Blog post published successfully. View it at /blog/${slug}`,
       });
-      navigate("/blog");
-    } else {
+      navigate("/admin/dashboard"); // Navigate back to dashboard
+    } catch (error) {
       toast({
         title: "Error",
         description: "Failed to create blog post. Please try again.",
+        variant: "destructive",
       });
+      console.error("Error creating blog post:", error.message);
     }
   };
 
