@@ -29,7 +29,6 @@ const BlogPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-<<<<<<< HEAD
         const fetchPost = async () => {
           try {
             const { data, error } = await supabase
@@ -45,20 +44,12 @@ const BlogPost = () => {
           }
         };
               } catch (error) {
-=======
-        const response = await axios.get(
-          `https://portal.omabracredit.co.ke/api.php?action=fetchPost&slug=${slug}`
-        );
-        setPost(response.data);
-      } catch (error) {
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
         console.error("Error fetching post:", error);
       }
     };
 
     const fetchLatestPosts = async () => {
       try {
-<<<<<<< HEAD
         const fetchLatestPosts = async () => {
           try {
             const { data, error } = await supabase
@@ -74,13 +65,6 @@ const BlogPost = () => {
           }
         };
               } catch (error) {
-=======
-        const response = await axios.get(
-          "https://portal.omabracredit.co.ke/api.php?action=latestPosts"
-        );
-        setLatestPosts(response.data);
-      } catch (error) {
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
         console.error("Error fetching latest posts:", error);
       }
     };
@@ -94,7 +78,6 @@ const BlogPost = () => {
     if (category) {
       const fetchFilteredPosts = async () => {
         try {
-<<<<<<< HEAD
           const fetchFilteredPosts = async () => {
             try {
               const { data, error } = await supabase
@@ -110,13 +93,6 @@ const BlogPost = () => {
             }
           };
                   } catch (error) {
-=======
-          const response = await axios.get(
-            `https://portal.omabracredit.co.ke/api.php?action=fetchPostsByCategory&category=${category}`
-          );
-          setFilteredPosts(response.data);
-        } catch (error) {
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
           console.error("Error fetching filtered posts:", error);
         }
       };
@@ -161,11 +137,7 @@ const BlogPost = () => {
   // Disqus configuration
 
   const disqusConfig = {
-<<<<<<< HEAD
     url: `https://cpajoe.netlify.app/blog/${slug}`,
-=======
-    url: `https://portal.omabracredit.co.ke/blog/${slug}`,
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
     identifier: slug,
     title: post.title,
     language: 'en',
