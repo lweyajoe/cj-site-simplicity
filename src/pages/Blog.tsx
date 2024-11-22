@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { supabase } from "@/supabaseClient"; // Import Supabase client
+import { supabase } from "@/supabaseClient";
 
 const categories = [
   "real estate",
@@ -14,6 +14,8 @@ const categories = [
   "unit trusts",
 ];
 
+const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
+
 const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -22,21 +24,19 @@ const Blog = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const { data, error } = await supabase
-        .from("blog_posts") // Table name in your Supabase database
-        .select("*")
-        .order("created_at", { ascending: false }); // Order by latest
+      try {
+        const { data, error } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Error fetching posts:", error.message);
-      } else {
+        if (error) {
+          console.error("Error fetching posts from Supabase:", error.message);
+          return;
+        }
+
         setPosts(data || []);
         setFilteredPosts(data || []);
-      try {
-        const response = await fetch("https://portal.omabracredit.co.ke/api.php?action=fetchPosts");
-        const data = await response.json();
-        setPosts(data);
-        setFilteredPosts(data);
         setLatestArticles(data.slice(0, 5)); // Get latest 5 posts
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -44,25 +44,6 @@ const Blog = () => {
     };
 
     fetchPosts();
-  }, []);
-
-  // Fetch latest articles
-  useEffect(() => {
-    const fetchLatestArticles = async () => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(5); // Limit to the latest 5 articles
-
-      if (error) {
-        console.error("Error fetching latest articles:", error.message);
-      } else {
-        setLatestArticles(data || []);
-      }
-    };
-
-    fetchLatestArticles();
   }, []);
 
   useEffect(() => {
@@ -83,7 +64,6 @@ const Blog = () => {
       <main className="flex-grow py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Main content area */}
             <div className="lg:col-span-8">
               <h1 className="text-4xl font-bold mb-8 text-primary">Blog</h1>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -118,9 +98,7 @@ const Blog = () => {
               </div>
             </div>
 
-            {/* Sidebar */}
             <aside className="lg:col-span-4 space-y-8">
-              {/* Categories Sidebar */}
               <div className="glass-card p-6 sticky top-4">
                 <h3 className="text-xl font-semibold mb-4">Read my articles on</h3>
                 <nav>
@@ -131,7 +109,7 @@ const Blog = () => {
                           to={`/blog?category=${category}`}
                           className="block py-2 text-secondary hover:text-primary transition-colors"
                         >
-                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                          {capitalize(category)}
                         </Link>
                       </li>
                     ))}
@@ -139,7 +117,6 @@ const Blog = () => {
                 </nav>
               </div>
 
-              {/* Latest Articles */}
               <div className="glass-card p-6">
                 <h3 className="text-xl font-semibold mb-4">Latest Articles</h3>
                 <div className="space-y-4">
