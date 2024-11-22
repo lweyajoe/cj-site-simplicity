@@ -22,7 +22,6 @@ const Blog = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-<<<<<<< HEAD
       const { data, error } = await supabase
         .from("blog_posts") // Table name in your Supabase database
         .select("*")
@@ -33,7 +32,6 @@ const Blog = () => {
       } else {
         setPosts(data || []);
         setFilteredPosts(data || []);
-=======
       try {
         const response = await fetch("https://portal.omabracredit.co.ke/api.php?action=fetchPosts");
         const data = await response.json();
@@ -42,14 +40,12 @@ const Blog = () => {
         setLatestArticles(data.slice(0, 5)); // Get latest 5 posts
       } catch (error) {
         console.error("Error fetching posts:", error);
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
       }
     };
 
     fetchPosts();
   }, []);
 
-<<<<<<< HEAD
   // Fetch latest articles
   useEffect(() => {
     const fetchLatestArticles = async () => {
@@ -69,10 +65,6 @@ const Blog = () => {
     fetchLatestArticles();
   }, []);
 
-  // Handle category-based filtering
-=======
-  // Filter posts based on selected category
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
   useEffect(() => {
     const category = searchParams.get("category");
     if (category) {
@@ -99,11 +91,7 @@ const Blog = () => {
                   <Link to={`/blog/${post.slug}`} key={post.id}>
                     <article className="glass-card hover:shadow-lg transition-shadow duration-300">
                       <img
-<<<<<<< HEAD
                         src={post.image || "/placeholder.jpg"}
-=======
-                        src={post.image || "/placeholder.svg"}
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
                         alt={post.title}
                         className="w-full h-48 object-cover rounded-t-xl"
                       />
@@ -156,15 +144,7 @@ const Blog = () => {
                 <h3 className="text-xl font-semibold mb-4">Latest Articles</h3>
                 <div className="space-y-4">
                   {latestArticles.map((article) => (
-<<<<<<< HEAD
-                    <Link
-                      key={article.id}
-                      to={`/blog/${article.slug}`}
-                      className="block group"
-                    >
-=======
                     <Link key={article.id} to={`/blog/${article.slug}`} className="block group">
->>>>>>> 1911ce57e5ead9bdbf9a3655555ec584ba42e4e5
                       <div className="space-y-1">
                         <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
                           {article.category}
