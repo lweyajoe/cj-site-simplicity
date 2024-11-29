@@ -10,6 +10,11 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Services from "./pages/Services";
 import BusinessRegistration from "./pages/BusinessRegistration";
+import AccountingServices from "./pages/AccountingServices";
+import AccountingSoftware from "./pages/AccountingSoftware";
+import WealthManagement from "./pages/WealthManagement";
+import FinancialModeling from "./pages/FinancialModeling";
+import TaxServices from "./pages/TaxServices";
 import Contact from "./pages/Contact";
 import Shop from "./pages/Shop";
 import ProductCategory from "./pages/ProductCategory";
@@ -34,6 +39,11 @@ const App = () => (
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/business-registration" element={<BusinessRegistration />} />
+          <Route path="/services/accounting-services" element={<AccountingServices />} />
+          <Route path="/services/accounting-software" element={<AccountingSoftware />} />
+          <Route path="/services/wealth-management" element={<WealthManagement />} />
+          <Route path="/services/financial-modeling" element={<FinancialModeling />} />
+          <Route path="/services/tax-services" element={<TaxServices />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/category/:type" element={<ProductCategory />} />
