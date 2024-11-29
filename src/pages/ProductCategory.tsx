@@ -84,14 +84,14 @@ const ProductCategory = () => {
         {/* Main Content */}
         <main className="flex-grow p-6">
           {/* Hero Section */}
-          <div className="bg-primary text-white p-8 rounded-xl mb-8">
+          <div className="bg-[#1e293b] text-white p-8 rounded-xl mb-8">
             <div className="flex items-center gap-4 mb-4">
               <ShoppingBag className="w-8 h-8" />
               <h1 className="text-3xl font-bold">{type}</h1>
             </div>
             <p className="text-lg opacity-90">
-              Discover our curated collection of professional {type?.toLowerCase()}. 
-              Find the perfect solution to elevate your business and streamline your operations.
+              Browse our collection of professional {type?.toLowerCase()} solutions 
+              designed to help you succeed in your business endeavors.
             </p>
           </div>
           

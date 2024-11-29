@@ -1,30 +1,11 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { supabase } from "@/supabaseClient";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProductGrid from "@/components/shop/ProductGrid";
-import { supabase } from "@/supabaseClient";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ShoppingBag } from "lucide-react";
-
-interface ProductType {
-  id: number;
-  name: string;
-}
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  product_type_id: number;
-  sector_id: number;
-  unique_id: string;
-  created_at: string;
-  images: { image_url: string }[];
-}
 
 const Shop = () => {
   const { data: productTypes, isLoading: loadingTypes } = useQuery({
@@ -35,7 +16,7 @@ const Shop = () => {
         .select("*")
         .order("name");
       if (error) throw error;
-      return data as ProductType[];
+      return data;
     },
   });
 
@@ -50,12 +31,12 @@ const Shop = () => {
         `)
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as Product[];
+      return data;
     },
   });
 
   if (loadingTypes || loadingProducts) {
-    return <LoadingSkeleton />;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -70,7 +51,7 @@ const Shop = () => {
               {productTypes?.map((type) => (
                 <li key={type.id}>
                   <Link
-                    to={`#${type.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    to={`/shop/category/${type.name.toLowerCase().replace(/\s+/g, '-')}`}
                     className="flex items-center text-gray-600 hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50"
                   >
                     <ChevronRight className="w-4 h-4 mr-2" />
@@ -85,7 +66,7 @@ const Shop = () => {
         {/* Main Content */}
         <main className="flex-grow p-6">
           {/* Hero Section */}
-          <div className="bg-primary text-white p-8 rounded-xl mb-8">
+          <div className="bg-[#1e293b] text-white p-8 rounded-xl mb-8">
             <div className="flex items-center gap-4 mb-4">
               <ShoppingBag className="w-8 h-8" />
               <h1 className="text-3xl font-bold">CJ's Digital Marketplace</h1>
@@ -98,66 +79,38 @@ const Shop = () => {
           </div>
           
           {/* Product Sections */}
-          {productTypes?.map((type) => (
-            <section 
-              key={type.id} 
-              id={type.name.toLowerCase().replace(/\s+/g, '-')} 
-              className="mb-16"
-            >
-              <h2 className="text-2xl font-semibold mb-6 text-primary">{type.name}</h2>
-              <ProductGrid
-                products={
-                  (products
-                    ?.filter((product) => product.product_type_id === type.id)
-                    .slice(-3)) || []
-                }
-              />
-              <div className="mt-6 text-center">
-                <Button 
-                  variant="outline"
-                  className="hover:bg-primary hover:text-white transition-colors"
-                >
-                  See More {type.name}
-                  <ChevronRight className="w-4 h-4 ml-2" />
-                </Button>
-              </div>
-            </section>
-          ))}
+          {productTypes?.map((type) => {
+            const typeProducts = products
+              ?.filter((product) => product.product_type_id === type.id)
+              .slice(-3);
+
+            return (
+              <section 
+                key={type.id} 
+                id={type.name.toLowerCase().replace(/\s+/g, '-')} 
+                className="mb-16"
+              >
+                <h2 className="text-2xl font-semibold mb-6 text-primary">{type.name}</h2>
+                <ProductGrid products={typeProducts || []} />
+                <div className="mt-6 text-center">
+                  <Link to={`/shop/category/${type.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <Button 
+                      variant="outline"
+                      className="hover:bg-primary hover:text-white transition-colors"
+                    >
+                      See More {type.name}
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </div>
+              </section>
+            );
+          })}
         </main>
       </div>
       <Footer />
     </div>
   );
 };
-
-const LoadingSkeleton = () => (
-  <div className="min-h-screen flex flex-col">
-    <Navbar />
-    <div className="flex-grow flex">
-      <aside className="w-64 bg-white shadow-md hidden md:block">
-        <div className="p-4">
-          <Skeleton className="h-8 w-32 mb-4" />
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Skeleton key={i} className="h-10 w-full mb-2" />
-          ))}
-        </div>
-      </aside>
-      <main className="flex-grow p-6">
-        <Skeleton className="h-40 w-full mb-8 rounded-xl" />
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="mb-16">
-            <Skeleton className="h-8 w-48 mb-6" />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((j) => (
-                <Skeleton key={j} className="h-64 rounded-lg" />
-              ))}
-            </div>
-          </div>
-        ))}
-      </main>
-    </div>
-    <Footer />
-  </div>
-);
 
 export default Shop;

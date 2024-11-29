@@ -17,7 +17,7 @@ const ProductGrid = ({ products }: ProductGridProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {products.map((product) => (
-        <Link key={product.id} to={`/shop/${product.id}`}>
+        <Link key={product.id} to={`/shop/product/${product.id}`}>
           <Card className="h-full hover:shadow-lg transition-shadow duration-300">
             <CardContent className="p-0">
               <div className="aspect-video w-full relative overflow-hidden rounded-t-lg">
