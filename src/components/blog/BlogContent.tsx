@@ -22,7 +22,59 @@ export const BlogContent = ({ post }: BlogContentProps) => {
           {post.category}
         </span>
       </div>
-      <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: post.content }}></div>
+      <style>
+        {`
+          .blog-content h3 {
+            color: #7E69AB;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+          }
+          
+          .blog-content a {
+            color: #9b87f5;
+            text-decoration: none;
+          }
+          
+          .blog-content a:hover {
+            text-decoration: underline;
+          }
+          
+          .blog-content blockquote {
+            border-left: 4px solid #9b87f5;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #666;
+          }
+          
+          .blog-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+          }
+          
+          .blog-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+          }
+          
+          .blog-content td,
+          .blog-content th {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+          
+          .blog-content th {
+            background-color: #f5f5f5;
+          }
+        `}
+      </style>
+      <div 
+        className="blog-content prose max-w-none" 
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </article>
   );
 };
