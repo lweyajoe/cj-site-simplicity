@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { ReactQuillEditor } from "@/components/ui/reactQuillEditor";
 import Navbar from "@/components/layout/Navbar";
+import { supabase } from "@/supabaseClient";
+import { useQuery } from "@tanstack/react-query";
 
 const categories = [
   "real estate",
@@ -25,55 +27,78 @@ const EditBlogPost = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(`https://portal.omabracredit.co.ke/api.php?action=fetchPost&id=${id}`);
-        const data = await response.json();
-        setTitle(data.title);
-        setContent(data.content);
-        setCategory(data.category);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to fetch post data",
-          variant: "destructive",
-        });
-      }
-    };
+  // Fetch post data using React Query
+  const { data: post, isLoading } = useQuery({
+    queryKey: ["blog-post", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-    fetchPost();
-  }, [id, toast]);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  // Set form data when post is loaded
+  useEffect(() => {
+    if (post) {
+      setTitle(post.title);
+      setContent(post.content);
+      setCategory(post.category);
+    }
+  }, [post]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`https://portal.omabracredit.co.ke/api.php?action=updatePost&id=${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, content, category }),
-      });
+      const { error } = await supabase
+        .from("blog_posts")
+        .update({
+          title,
+          content,
+          category,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", id);
 
-      if (response.ok) {
-        toast({
-          title: "Success!",
-          description: "Blog post updated successfully.",
-        });
-        navigate("/admin/dashboard");
-      } else {
-        throw new Error('Failed to update post');
-      }
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Blog post updated successfully.",
+      });
+      navigate("/admin/dashboard");
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to update blog post. Please try again.",
         variant: "destructive",
       });
+      console.error("Error updating post:", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-accent/30">
+        <Navbar />
+        <div className="container mx-auto px-4 py-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-accent/30">
