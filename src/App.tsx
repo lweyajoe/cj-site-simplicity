@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Index from "./pages/Index";
@@ -26,11 +26,21 @@ import AdminDashboard from "./pages/AdminDashboard";
 import EditBlogPost from "./pages/EditBlogPost";
 
 const queryClient = new QueryClient();
+const helmetContext = {};
 
 const App = () => (
-  <HelmetProvider>
+  <HelmetProvider context={helmetContext}>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <Helmet>
+          {/* Default meta tags that will be overridden by individual pages */}
+          <title>CPAJoe Financial Advisory</title>
+          <meta name="description" content="Expert financial advisory services in Kenya" />
+          <meta name="robots" content="index, follow" />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="CPAJoe - Financial Advisory" />
+          <meta name="twitter:site" content="@CPAJoeKenya" />
+        </Helmet>
         <Toaster />
         <Sonner />
         <BrowserRouter>
