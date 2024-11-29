@@ -1,0 +1,107 @@
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/supabaseClient";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { Button } from "@/components/ui/button";
+import { ChevronRight, ShoppingBag } from "lucide-react";
+import ProductGrid from "@/components/shop/ProductGrid";
+import { Link } from "react-router-dom";
+
+const ProductCategory = () => {
+  const { type } = useParams();
+
+  const { data: productType, isLoading: loadingType } = useQuery({
+    queryKey: ["productType", type],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("product_types")
+        .select("*")
+        .eq("name", type)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: products, isLoading: loadingProducts } = useQuery({
+    queryKey: ["products", productType?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select(`
+          *,
+          images:product_images(image_url)
+        `)
+        .eq("product_type_id", productType?.id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!productType?.id,
+  });
+
+  const { data: productTypes } = useQuery({
+    queryKey: ["productTypes"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("product_types")
+        .select("*")
+        .order("name");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  if (loadingType || loadingProducts) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <Navbar />
+      <div className="flex-grow flex">
+        {/* Sidebar */}
+        <aside className="w-64 bg-white shadow-md hidden md:block">
+          <nav className="p-4">
+            <h2 className="text-lg font-semibold mb-4 text-primary">Categories</h2>
+            <ul className="space-y-2">
+              {productTypes?.map((type) => (
+                <li key={type.id}>
+                  <Link
+                    to={`/shop/category/${type.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="flex items-center text-gray-600 hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50"
+                  >
+                    <ChevronRight className="w-4 h-4 mr-2" />
+                    {type.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-grow p-6">
+          {/* Hero Section */}
+          <div className="bg-primary text-white p-8 rounded-xl mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <ShoppingBag className="w-8 h-8" />
+              <h1 className="text-3xl font-bold">{type}</h1>
+            </div>
+            <p className="text-lg opacity-90">
+              Discover our curated collection of professional {type?.toLowerCase()}. 
+              Find the perfect solution to elevate your business and streamline your operations.
+            </p>
+          </div>
+          
+          {/* Products Grid */}
+          <ProductGrid products={products || []} />
+        </main>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export default ProductCategory;

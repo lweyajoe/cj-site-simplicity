@@ -11,6 +11,8 @@ import BlogPost from "./pages/BlogPost";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import Shop from "./pages/Shop";
+import ProductCategory from "./pages/ProductCategory";
+import ProductDetail from "./pages/ProductDetail";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/category/:type" element={<ProductCategory />} />
+          <Route path="/shop/product/:id" element={<ProductDetail />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/admin"
