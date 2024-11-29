@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { supabase } from "@/supabaseClient";
+import { Sidebar } from "@/components/blog/Sidebar";
 
 const categories = [
   "real estate",
@@ -37,7 +38,7 @@ const Blog = () => {
 
         setPosts(data || []);
         setFilteredPosts(data || []);
-        setLatestArticles(data.slice(0, 5)); // Get latest 5 posts
+        setLatestArticles(data.slice(0, 5));
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -61,11 +62,22 @@ const Blog = () => {
   return (
     <div className="min-h-screen flex flex-col bg-accent">
       <Navbar />
-      <main className="flex-grow py-12">
-        <div className="container mx-auto px-4">
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="py-12 bg-primary text-white">
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl font-bold mb-4 animate-fade-in">CJ's Blog</h1>
+            <p className="text-xl mb-8 animate-fade-in">
+              Explore our collection of insightful articles and expert advice on finance,
+              business, and wealth management. Stay informed with the latest trends and
+              strategies.
+            </p>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8">
-              <h1 className="text-4xl font-bold mb-8 text-primary">Blog</h1>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredPosts.map((post) => (
                   <Link to={`/blog/${post.slug}`} key={post.id}>
@@ -98,46 +110,7 @@ const Blog = () => {
               </div>
             </div>
 
-            <aside className="lg:col-span-4 space-y-8">
-              <div className="glass-card p-6 sticky top-4">
-                <h3 className="text-xl font-semibold mb-4">Read my articles on</h3>
-                <nav>
-                  <ul className="space-y-2">
-                    {categories.map((category) => (
-                      <li key={category}>
-                        <Link
-                          to={`/blog?category=${category}`}
-                          className="block py-2 text-secondary hover:text-primary transition-colors"
-                        >
-                          {capitalize(category)}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              </div>
-
-              <div className="glass-card p-6">
-                <h3 className="text-xl font-semibold mb-4">Latest Articles</h3>
-                <div className="space-y-4">
-                  {latestArticles.map((article) => (
-                    <Link key={article.id} to={`/blog/${article.slug}`} className="block group">
-                      <div className="space-y-1">
-                        <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
-                          {article.category}
-                        </span>
-                        <h4 className="text-sm font-medium group-hover:text-secondary transition-colors">
-                          {article.title}
-                        </h4>
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(article.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </aside>
+            <Sidebar categories={categories} latestArticles={latestArticles} />
           </div>
         </div>
       </main>
