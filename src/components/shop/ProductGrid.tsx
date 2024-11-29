@@ -15,12 +15,12 @@ interface ProductGridProps {
 
 const ProductGrid = ({ products }: ProductGridProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {products.map((product) => (
         <Link key={product.id} to={`/shop/${product.id}`}>
           <Card className="h-full hover:shadow-lg transition-shadow duration-300">
             <CardContent className="p-0">
-              <div className="aspect-square w-full relative overflow-hidden rounded-t-lg">
+              <div className="aspect-video w-full relative overflow-hidden rounded-t-lg">
                 <img
                   src={
                     product.images?.[0]?.image_url ||
@@ -40,7 +40,7 @@ const ProductGrid = ({ products }: ProductGridProps) => {
               </div>
             </CardContent>
             <CardFooter className="p-4 pt-0">
-              <p className="text-lg font-bold">
+              <p className="text-lg font-bold text-primary">
                 ${product.price.toLocaleString()}
               </p>
             </CardFooter>
