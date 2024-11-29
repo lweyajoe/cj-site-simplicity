@@ -11,7 +11,7 @@ interface SidebarProps {
   }>;
 }
 
-export const Sidebar = ({ categories, latestPosts }: SidebarProps) => {
+export const Sidebar = ({ categories = [], latestPosts = [] }: SidebarProps) => {
   return (
     <aside className="lg:col-span-4 space-y-8">
       <div className="glass-card p-6 sticky top-4">

@@ -15,12 +15,10 @@ const categories = [
   "unit trusts",
 ];
 
-const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
-
 const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
-  const [latestArticles, setLatestArticles] = useState([]);
+  const [latestPosts, setLatestPosts] = useState([]);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -38,7 +36,7 @@ const Blog = () => {
 
         setPosts(data || []);
         setFilteredPosts(data || []);
-        setLatestArticles(data.slice(0, 5));
+        setLatestPosts(data?.slice(0, 5) || []);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -63,7 +61,6 @@ const Blog = () => {
     <div className="min-h-screen flex flex-col bg-accent">
       <Navbar />
       <main className="flex-grow">
-        {/* Hero Section */}
         <section className="py-12 bg-primary text-white">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold mb-4 animate-fade-in">CJ's Blog</h1>
@@ -110,7 +107,7 @@ const Blog = () => {
               </div>
             </div>
 
-            <Sidebar categories={categories} latestArticles={latestArticles} />
+            <Sidebar categories={categories} latestPosts={latestPosts} />
           </div>
         </div>
       </main>
