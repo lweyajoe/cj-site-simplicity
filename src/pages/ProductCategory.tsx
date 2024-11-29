@@ -17,9 +17,15 @@ const ProductCategory = () => {
       const { data, error } = await supabase
         .from("product_types")
         .select("*")
-        .eq("name", type)
+        .ilike("name", type?.replace(/-/g, ' ') || '')
         .single();
-      if (error) throw error;
+      
+      if (error) {
+        if (error.code === 'PGRST116') {
+          return null; // Return null if no product type found
+        }
+        throw error;
+      }
       return data;
     },
   });
@@ -57,6 +63,22 @@ const ProductCategory = () => {
     return <div>Loading...</div>;
   }
 
+  if (!productType) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <div className="flex-grow container mx-auto px-4 py-8">
+          <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
+          <p>The category you're looking for doesn't exist.</p>
+          <Link to="/shop">
+            <Button className="mt-4">Return to Shop</Button>
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
@@ -87,10 +109,10 @@ const ProductCategory = () => {
           <div className="bg-[#1e293b] text-white p-8 rounded-xl mb-8">
             <div className="flex items-center gap-4 mb-4">
               <ShoppingBag className="w-8 h-8" />
-              <h1 className="text-3xl font-bold">{type}</h1>
+              <h1 className="text-3xl font-bold">{productType.name}</h1>
             </div>
             <p className="text-lg opacity-90">
-              Browse our collection of professional {type?.toLowerCase()} solutions 
+              Browse our collection of professional {productType.name.toLowerCase()} solutions 
               designed to help you succeed in your business endeavors.
             </p>
           </div>
