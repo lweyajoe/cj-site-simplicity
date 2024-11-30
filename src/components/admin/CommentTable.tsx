@@ -9,7 +9,7 @@ interface Comment {
   author_name: string;
   author_email: string;
   content: string;
-  created_at: string;
+  date: string;
   approval: number;
   blog_posts?: {
     title: string;
@@ -45,7 +45,7 @@ export const CommentTable = ({ data, onApprove, onDelete }: CommentTableProps) =
             <TableCell>{comment.author_email}</TableCell>
             <TableCell className="max-w-md truncate">{comment.content}</TableCell>
             <TableCell>{comment.blog_posts?.title}</TableCell>
-            <TableCell>{new Date(comment.created_at).toLocaleDateString()}</TableCell>
+            <TableCell>{new Date(comment.date).toLocaleDateString()}</TableCell>
             <TableCell>
               {comment.approval === 1 ? (
                 <span className="text-green-600">Approved</span>
