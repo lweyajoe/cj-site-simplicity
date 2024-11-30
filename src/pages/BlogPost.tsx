@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { BlogContent } from "@/components/blog/BlogContent";
 import { Sidebar } from "@/components/blog/Sidebar";
 import { supabase } from "@/supabaseClient";
+import { Comments } from "@/components/blog/Comments";
 
 const BlogPost = () => {
   const { id: slug } = useParams();
@@ -132,6 +133,10 @@ const BlogPost = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">
             <BlogContent post={post} />
+            <div className="mt-12">
+              <h2 className="text-2xl font-bold mb-6">Comments</h2>
+              <Comments postId={post?.id} />
+            </div>
           </div>
           <Sidebar categories={categories} latestPosts={latestPosts} />
         </div>
