@@ -39,7 +39,14 @@ export const Comments = ({ postId }: { postId: number }) => {
         .eq("approval", 1)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load comments. Please try again later.",
+          variant: "destructive",
+        });
+        throw error;
+      }
       return data as Comment[];
     },
   });
@@ -53,7 +60,14 @@ export const Comments = ({ postId }: { postId: number }) => {
         .eq("approval", 1)
         .order("created_at", { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load replies. Please try again later.",
+          variant: "destructive",
+        });
+        throw error;
+      }
       return data as Reply[];
     },
   });
