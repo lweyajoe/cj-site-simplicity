@@ -22,7 +22,7 @@ const CommentsManagement = () => {
             title
           )
         `)
-        .order("created_at", { ascending: false });
+        .order("createdat", { ascending: false });
 
       if (error) {
         console.error("Error fetching comments:", error);
@@ -45,7 +45,7 @@ const CommentsManagement = () => {
             )
           )
         `)
-        .order("created_at", { ascending: false });
+        .order("createdat", { ascending: false });
 
       if (error) {
         console.error("Error fetching replies:", error);
