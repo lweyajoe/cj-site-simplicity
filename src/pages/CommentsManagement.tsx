@@ -24,7 +24,10 @@ const CommentsManagement = () => {
         `)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching comments:", error);
+        throw error;
+      }
       return data;
     },
   });
@@ -44,7 +47,10 @@ const CommentsManagement = () => {
         `)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching replies:", error);
+        throw error;
+      }
       return data;
     },
   });
