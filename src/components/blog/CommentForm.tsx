@@ -52,12 +52,26 @@ export const CommentForm = ({ postId, type, commentId, onSuccess }: CommentFormP
         ? { ...values, post_id: postId, approval: 0 }
         : { ...values, comment_id: commentId, approval: 0 };
 
-      const { error } = await supabase.from(table).insert([data]);
+      console.log(`Attempting to insert ${type} with data:`, data);
+      
+      const { data: insertedData, error } = await supabase
+        .from(table)
+        .insert([data])
+        .select()
+        .single();
 
       if (error) {
         console.error(`Error submitting ${type}:`, error);
+        console.error('Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
         throw error;
       }
+
+      console.log(`Successfully inserted ${type}:`, insertedData);
 
       toast({
         title: "Success!",
