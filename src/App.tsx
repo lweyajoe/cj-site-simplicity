@@ -27,6 +27,9 @@ import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import EditBlogPost from "./pages/EditBlogPost";
+import CommentsManagement from "./pages/CommentsManagement";
+import EditComment from "./pages/EditComment";
+import EditReply from "./pages/EditReply";
 
 const queryClient = new QueryClient();
 const helmetContext = {};
@@ -37,7 +40,6 @@ const App = () => (
       <TooltipProvider>
         <ErrorBoundary>
           <Helmet>
-            {/* Default meta tags that will be overridden by individual pages */}
             <title>CPAJoe Financial Advisory</title>
             <meta name="description" content="Expert financial advisory services in Kenya" />
             <meta name="robots" content="index, follow" />
@@ -83,10 +85,34 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/comments"
+                element={
+                  <ProtectedRoute>
+                    <CommentsManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/edit/:id"
                 element={
                   <ProtectedRoute>
                     <EditBlogPost />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/edit-comment/:id"
+                element={
+                  <ProtectedRoute>
+                    <EditComment />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/edit-reply/:id"
+                element={
+                  <ProtectedRoute>
+                    <EditReply />
                   </ProtectedRoute>
                 }
               />
