@@ -32,62 +32,67 @@ export const Comments = ({ postId }: { postId: number }) => {
   const { data: comments = [], isLoading: commentsLoading } = useQuery({
     queryKey: ["comments", postId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("post_id", postId)
-        .eq("approval", 1)
-        .order("created_at", { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from("comments")
+          .select("*")
+          .eq("post_id", postId)
+          .eq("approval", 1)
+          .order("created_at", { ascending: false });
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to load comments. Please try again later.",
-          variant: "destructive",
-        });
+        if (error) {
+          console.error("Error loading comments:", error);
+          return [];
+        }
+        return data as Comment[];
+      } catch (error) {
+        console.error("Error in comments query:", error);
         return [];
       }
-      return data as Comment[];
     },
   });
 
   const { data: replies = [], isLoading: repliesLoading } = useQuery({
     queryKey: ["replies", postId],
     queryFn: async () => {
-      // First, get all comments for this post
-      const { data: postComments, error: commentsError } = await supabase
-        .from("comments")
-        .select("id")
-        .eq("post_id", postId);
+      try {
+        // First, get all comments for this post
+        const { data: postComments, error: commentsError } = await supabase
+          .from("comments")
+          .select("id")
+          .eq("post_id", postId);
 
-      if (commentsError) {
-        // Instead of throwing error, return empty array
-        console.error("Error loading comment references:", commentsError);
+        if (commentsError) {
+          console.error("Error loading comment references:", commentsError);
+          return [];
+        }
+
+        // If there are no comments, return empty array for replies
+        if (!postComments || postComments.length === 0) {
+          return [];
+        }
+
+        // Get the comment IDs for this post
+        const commentIds = postComments.map(comment => comment.id);
+
+        // Then fetch replies only for those comments
+        const { data, error } = await supabase
+          .from("replies")
+          .select("*")
+          .in("comment_id", commentIds)
+          .eq("approval", 1)
+          .order("created_at", { ascending: true });
+
+        if (error) {
+          console.error("Error loading replies:", error);
+          return [];
+        }
+        
+        return data as Reply[];
+      } catch (error) {
+        console.error("Error in replies query:", error);
         return [];
       }
-
-      // If there are no comments, return empty array for replies
-      if (!postComments || postComments.length === 0) {
-        return [];
-      }
-
-      // Get the comment IDs for this post
-      const commentIds = postComments.map(comment => comment.id);
-
-      // Then fetch replies only for those comments
-      const { data, error } = await supabase
-        .from("replies")
-        .select("*")
-        .in("comment_id", commentIds)
-        .eq("approval", 1)
-        .order("created_at", { ascending: true });
-
-      if (error) {
-        console.error("Error loading replies:", error);
-        return [];
-      }
-      
-      return data as Reply[];
     },
   });
 

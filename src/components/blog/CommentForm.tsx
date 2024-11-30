@@ -54,7 +54,10 @@ export const CommentForm = ({ postId, type, commentId, onSuccess }: CommentFormP
 
       const { error } = await supabase.from(table).insert([data]);
 
-      if (error) throw error;
+      if (error) {
+        console.error(`Error submitting ${type}:`, error);
+        throw error;
+      }
 
       toast({
         title: "Success!",
@@ -65,12 +68,13 @@ export const CommentForm = ({ postId, type, commentId, onSuccess }: CommentFormP
       if (onSuccess) onSuccess();
       
       // Invalidate queries to refresh the comments list
-      queryClient.invalidateQueries({ queryKey: ["comments"] });
-      queryClient.invalidateQueries({ queryKey: ["replies"] });
+      await queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+      await queryClient.invalidateQueries({ queryKey: ["replies", postId] });
     } catch (error) {
+      console.error(`Error in ${type} submission:`, error);
       toast({
         title: "Error",
-        description: "Failed to submit your comment. Please try again.",
+        description: `Failed to submit your ${type}. Please try again.`,
         variant: "destructive",
       });
     } finally {
