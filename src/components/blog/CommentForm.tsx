@@ -49,7 +49,7 @@ export const CommentForm = ({ postId, type, commentId, onSuccess }: CommentFormP
     try {
       const table = type === "comment" ? "comments" : "replies";
       const data = type === "comment" 
-        ? { ...values, post_id: postId, approval: 0 }
+        ? { ...values, blog_post_id: postId, approval: 0 }
         : { ...values, comment_id: commentId, approval: 0 };
 
       console.log(`Attempting to insert ${type} with data:`, data);

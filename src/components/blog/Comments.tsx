@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 
 interface Comment {
   id: number;
-  post_id: number;
+  blog_post_id: number;
   author_name: string;
   author_email: string;
   content: string;
@@ -36,7 +36,7 @@ export const Comments = ({ postId }: { postId: number }) => {
         const { data, error } = await supabase
           .from("comments")
           .select("*")
-          .eq("post_id", postId)
+          .eq("blog_post_id", postId)
           .eq("approval", 1)
           .order("created_at", { ascending: false });
 
@@ -60,7 +60,7 @@ export const Comments = ({ postId }: { postId: number }) => {
         const { data: postComments, error: commentsError } = await supabase
           .from("comments")
           .select("id")
-          .eq("post_id", postId);
+          .eq("blog_post_id", postId);
 
         if (commentsError) {
           console.error("Error loading comment references:", commentsError);
