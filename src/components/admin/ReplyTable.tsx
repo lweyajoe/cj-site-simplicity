@@ -9,7 +9,7 @@ interface Reply {
   author_name: string;
   author_email: string;
   content: string;
-  created_at: string;
+  date: string;
   approval: number;
   comments?: {
     blog_posts?: {
@@ -47,7 +47,7 @@ export const ReplyTable = ({ data, onApprove, onDelete }: ReplyTableProps) => {
             <TableCell>{reply.author_email}</TableCell>
             <TableCell className="max-w-md truncate">{reply.content}</TableCell>
             <TableCell>{reply.comments?.blog_posts?.title}</TableCell>
-            <TableCell>{new Date(reply.created_at).toLocaleDateString()}</TableCell>
+            <TableCell>{new Date(reply.date).toLocaleDateString()}</TableCell>
             <TableCell>
               {reply.approval === 1 ? (
                 <span className="text-green-600">Approved</span>
