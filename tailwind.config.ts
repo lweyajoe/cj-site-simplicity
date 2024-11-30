@@ -44,11 +44,16 @@ export default {
         "slide-in": {
           "0%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(0)" }
+        },
+        "spin-slow": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" }
         }
       },
       animation: {
         "fade-in": "fade-in 0.5s ease-out",
-        "slide-in": "slide-in 0.5s ease-out"
+        "slide-in": "slide-in 0.5s ease-out",
+        "spin-slow": "spin-slow 3s linear infinite"
       }
     },
   },
