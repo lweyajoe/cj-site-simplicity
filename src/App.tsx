@@ -6,6 +6,7 @@ import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import WhatsAppWidget from "./components/WhatsAppWidget";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -46,6 +47,7 @@ const App = () => (
           </Helmet>
           <Toaster />
           <Sonner />
+          <WhatsAppWidget />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
