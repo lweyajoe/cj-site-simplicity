@@ -54,9 +54,29 @@ export const Comments = ({ postId }: { postId: number }) => {
   const { data: replies = [], isLoading: repliesLoading } = useQuery({
     queryKey: ["replies", postId],
     queryFn: async () => {
+      // First, get all comments for this post
+      const { data: postComments, error: commentsError } = await supabase
+        .from("comments")
+        .select("id")
+        .eq("post_id", postId);
+
+      if (commentsError) {
+        toast({
+          title: "Error",
+          description: "Failed to load comment references. Please try again later.",
+          variant: "destructive",
+        });
+        throw commentsError;
+      }
+
+      // Get the comment IDs for this post
+      const commentIds = postComments.map(comment => comment.id);
+
+      // Then fetch replies only for those comments
       const { data, error } = await supabase
         .from("replies")
         .select("*")
+        .in("comment_id", commentIds)
         .eq("approval", 1)
         .order("created_at", { ascending: true });
 
