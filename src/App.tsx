@@ -30,6 +30,18 @@ import EditBlogPost from "./pages/EditBlogPost";
 import CommentsManagement from "./pages/CommentsManagement";
 import EditComment from "./pages/EditComment";
 import EditReply from "./pages/EditReply";
+import AddNewProductBusinessPlan from "./pages/AddNewProductBusinessPlan";
+import AddNewProductDashboard from "./pages/AddNewProductDashboard";
+import AddNewProductExcelTemplate from "./pages/AddNewProductExcelTemplate";
+import AddNewProductFinancialModel from "./pages/AddNewProductFinancialModel";
+import AddNewProductPitchdeck from "./pages/AddNewProductPitchdeck";
+import AddNewProductSoftware from "./pages/AddNewProductSoftware";
+import EditExistingProductBusinessPlan from "./pages/EditExistingProductBusinessPlan";
+import EditExistingProductDashboard from "./pages/EditExistingProductDashboard";
+import EditExistingProductExcelTemplate from "./pages/EditExistingProductExcelTemplate";
+import EditExistingProductFinancialModel from "./pages/EditExistingProductFinancialModel";
+import EditExistingProductPitchdeck from "./pages/EditExistingProductPitchdeck";
+import EditExistingProductSoftware from "./pages/EditExistingProductSoftware";
 
 const queryClient = new QueryClient();
 const helmetContext = {};
@@ -68,6 +80,8 @@ const App = () => (
               <Route path="/shop/category/:type" element={<ProductCategory />} />
               <Route path="/shop/product/:id" element={<ProductDetail />} />
               <Route path="/login" element={<Login />} />
+              
+              {/* Protected Admin Routes */}
               <Route
                 path="/admin"
                 element={
@@ -116,6 +130,107 @@ const App = () => (
                   </ProtectedRoute>
                 }
               />
+
+              {/* Product Management Routes */}
+              <Route
+                path="/admin/products/new/business-plan"
+                element={
+                  <ProtectedRoute>
+                    <AddNewProductBusinessPlan />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/new/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <AddNewProductDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/new/excel-template"
+                element={
+                  <ProtectedRoute>
+                    <AddNewProductExcelTemplate />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/new/financial-model"
+                element={
+                  <ProtectedRoute>
+                    <AddNewProductFinancialModel />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/new/pitchdeck"
+                element={
+                  <ProtectedRoute>
+                    <AddNewProductPitchdeck />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/new/software"
+                element={
+                  <ProtectedRoute>
+                    <AddNewProductSoftware />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Edit Product Routes */}
+              <Route
+                path="/admin/products/edit/business-plan"
+                element={
+                  <ProtectedRoute>
+                    <EditExistingProductBusinessPlan />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/edit/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <EditExistingProductDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/edit/excel-template"
+                element={
+                  <ProtectedRoute>
+                    <EditExistingProductExcelTemplate />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/edit/financial-model"
+                element={
+                  <ProtectedRoute>
+                    <EditExistingProductFinancialModel />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/edit/pitchdeck"
+                element={
+                  <ProtectedRoute>
+                    <EditExistingProductPitchdeck />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products/edit/software"
+                element={
+                  <ProtectedRoute>
+                    <EditExistingProductSoftware />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
