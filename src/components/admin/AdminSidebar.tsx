@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FileText, MessageSquare, Plus, Edit } from "lucide-react";
+import { FileText, MessageSquare, Plus, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminSidebar = () => {
@@ -31,10 +31,10 @@ const AdminSidebar = () => {
               Add New Product
             </Button>
           </Link>
-          <Link to="/admin/products/edit">
+          <Link to="/admin/products">
             <Button variant="ghost" className="w-full justify-start">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Products
+              <Package className="mr-2 h-4 w-4" />
+              Products Management
             </Button>
           </Link>
         </div>
