@@ -16,15 +16,15 @@ import {
 import { supabase } from "@/supabaseClient";
 
 interface ProductFormProps {
-  type: string;
   mode: 'create' | 'edit';
 }
 
-const ProductForm = ({ type, mode }: ProductFormProps) => {
+const ProductForm = ({ mode }: ProductFormProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [sector, setSector] = useState("");
+  const [productType, setProductType] = useState("");
   const [imageUrls, setImageUrls] = useState(["", "", "", ""]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -43,15 +43,14 @@ const ProductForm = ({ type, mode }: ProductFormProps) => {
     },
   });
 
-  // Fetch product type ID
-  const { data: productType } = useQuery({
-    queryKey: ["productType", type],
+  // Fetch product types
+  const { data: productTypes } = useQuery({
+    queryKey: ["productTypes"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("product_types")
-        .select("id")
-        .eq("name", type.replace(/_/g, ' '))
-        .single();
+        .select("*")
+        .order("name");
       if (error) throw error;
       return data;
     },
@@ -76,7 +75,7 @@ const ProductForm = ({ type, mode }: ProductFormProps) => {
             name,
             description,
             price: parseFloat(price),
-            product_type_id: productType?.id,
+            product_type_id: parseInt(productType),
             sector_id: parseInt(sector),
           },
         ])
@@ -102,7 +101,7 @@ const ProductForm = ({ type, mode }: ProductFormProps) => {
 
       toast({
         title: "Success",
-        description: `${type.replace(/_/g, ' ')} product ${mode === 'create' ? 'added' : 'updated'} successfully`,
+        description: `Product ${mode === 'create' ? 'added' : 'updated'} successfully`,
       });
       navigate("/admin/dashboard");
     } catch (error) {
@@ -148,6 +147,22 @@ const ProductForm = ({ type, mode }: ProductFormProps) => {
           onChange={(e) => setPrice(e.target.value)}
           required
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="productType">Product Type</Label>
+        <Select value={productType} onValueChange={setProductType} required>
+          <SelectTrigger>
+            <SelectValue placeholder="Select a product type" />
+          </SelectTrigger>
+          <SelectContent>
+            {productTypes?.map((type) => (
+              <SelectItem key={type.id} value={type.id.toString()}>
+                {type.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="space-y-2">
