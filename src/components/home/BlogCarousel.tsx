@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/supabaseClient";
 import {
   Carousel,
   CarouselContent,
@@ -7,28 +9,21 @@ import {
 } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
 
-const featuredPosts = [
-  {
-    id: 1,
-    title: "Understanding Business Registration in Kenya",
-    excerpt: "A comprehensive guide to registering your business...",
-    date: "2024-02-20",
-  },
-  {
-    id: 2,
-    title: "Tax Planning Strategies for SMEs",
-    excerpt: "Essential tax planning tips for small businesses...",
-    date: "2024-02-18",
-  },
-  {
-    id: 3,
-    title: "Investment Opportunities in East Africa",
-    excerpt: "Exploring lucrative investment options in the region...",
-    date: "2024-02-15",
-  },
-];
-
 const BlogCarousel = () => {
+  const { data: posts = [] } = useQuery({
+    queryKey: ["featured-posts"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("id, title, excerpt, created_at, slug")
+        .order("created_at", { ascending: false })
+        .limit(3);
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <Carousel
       opts={{
@@ -38,13 +33,15 @@ const BlogCarousel = () => {
       className="w-full max-w-5xl mx-auto"
     >
       <CarouselContent>
-        {featuredPosts.map((post) => (
+        {posts.map((post) => (
           <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3">
-            <Link to={`/blog/${post.id}`}>
+            <Link to={`/blog/${post.slug}`}>
               <div className="blog-card">
                 <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
                 <p className="text-gray-600 mb-2">{post.excerpt}</p>
-                <span className="text-sm text-gray-500">{post.date}</span>
+                <span className="text-sm text-gray-500">
+                  {new Date(post.created_at).toLocaleDateString()}
+                </span>
               </div>
             </Link>
           </CarouselItem>
