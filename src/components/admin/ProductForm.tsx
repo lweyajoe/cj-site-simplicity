@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ interface ProductFormProps {
 }
 
 const ProductForm = ({ mode }: ProductFormProps) => {
+  const { id } = useParams();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -29,6 +30,27 @@ const ProductForm = ({ mode }: ProductFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Fetch product data if in edit mode
+  const { data: productData } = useQuery({
+    queryKey: ["product", id],
+    queryFn: async () => {
+      if (mode === 'edit' && id) {
+        const { data, error } = await supabase
+          .from("products")
+          .select(`
+            *,
+            images:product_images(image_url)
+          `)
+          .eq("id", id)
+          .single();
+        if (error) throw error;
+        return data;
+      }
+      return null;
+    },
+    enabled: mode === 'edit' && !!id,
+  });
 
   // Fetch sectors
   const { data: sectors } = useQuery({
@@ -56,6 +78,21 @@ const ProductForm = ({ mode }: ProductFormProps) => {
     },
   });
 
+  // Set form data if in edit mode
+  useEffect(() => {
+    if (mode === 'edit' && productData) {
+      setName(productData.name);
+      setDescription(productData.description);
+      setPrice(productData.price.toString());
+      setSector(productData.sector_id.toString());
+      setProductType(productData.product_type_id.toString());
+      
+      // Set image URLs
+      const urls = productData.images?.map((img: { image_url: string }) => img.image_url) || [];
+      setImageUrls([...urls, ...Array(4 - urls.length).fill("")]);
+    }
+  }, [mode, productData]);
+
   const handleImageUrlChange = (index: number, value: string) => {
     const newUrls = [...imageUrls];
     newUrls[index] = value;
@@ -67,43 +104,82 @@ const ProductForm = ({ mode }: ProductFormProps) => {
     setIsSubmitting(true);
 
     try {
-      // Insert product
-      const { data: product, error: productError } = await supabase
-        .from("products")
-        .insert([
-          {
+      if (mode === 'edit' && id) {
+        // Update product
+        const { error: productError } = await supabase
+          .from("products")
+          .update({
             name,
             description,
             price: parseFloat(price),
             product_type_id: parseInt(productType),
             sector_id: parseInt(sector),
-          },
-        ])
-        .select()
-        .single();
+          })
+          .eq("id", id);
 
-      if (productError) throw productError;
+        if (productError) throw productError;
 
-      // Insert product images
-      const validImageUrls = imageUrls.filter(url => url.trim() !== "");
-      if (validImageUrls.length > 0) {
-        const { error: imagesError } = await supabase
+        // Delete existing images
+        const { error: deleteError } = await supabase
           .from("product_images")
-          .insert(
-            validImageUrls.map(url => ({
-              product_id: product.id,
-              image_url: url,
-            }))
-          );
+          .delete()
+          .eq("product_id", id);
 
-        if (imagesError) throw imagesError;
+        if (deleteError) throw deleteError;
+
+        // Insert new images
+        const validImageUrls = imageUrls.filter(url => url.trim() !== "");
+        if (validImageUrls.length > 0) {
+          const { error: imagesError } = await supabase
+            .from("product_images")
+            .insert(
+              validImageUrls.map(url => ({
+                product_id: id,
+                image_url: url,
+              }))
+            );
+
+          if (imagesError) throw imagesError;
+        }
+      } else {
+        // Insert new product
+        const { data: product, error: productError } = await supabase
+          .from("products")
+          .insert([
+            {
+              name,
+              description,
+              price: parseFloat(price),
+              product_type_id: parseInt(productType),
+              sector_id: parseInt(sector),
+            },
+          ])
+          .select()
+          .single();
+
+        if (productError) throw productError;
+
+        // Insert product images
+        const validImageUrls = imageUrls.filter(url => url.trim() !== "");
+        if (validImageUrls.length > 0) {
+          const { error: imagesError } = await supabase
+            .from("product_images")
+            .insert(
+              validImageUrls.map(url => ({
+                product_id: product.id,
+                image_url: url,
+              }))
+            );
+
+          if (imagesError) throw imagesError;
+        }
       }
 
       toast({
         title: "Success",
         description: `Product ${mode === 'create' ? 'added' : 'updated'} successfully`,
       });
-      navigate("/admin/dashboard");
+      navigate("/admin/products");
     } catch (error) {
       toast({
         title: "Error",
