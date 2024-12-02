@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import Navbar from "@/components/layout/Navbar";
 import { supabase } from "@/supabaseClient";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CommentTable } from "@/components/admin/CommentTable";
 import { ReplyTable } from "@/components/admin/ReplyTable";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const CommentsManagement = () => {
   const navigate = useNavigate();
@@ -108,32 +108,29 @@ const CommentsManagement = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-accent/30">
-      <Navbar />
-      <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-6">Comments & Replies Management</h1>
-        
-        <div className="space-y-8">
-          <div className="glass-card p-6">
-            <h2 className="text-2xl font-semibold mb-4">Comments</h2>
-            <CommentTable 
-              data={comments}
-              onApprove={(id) => handleApprove('comment', id)}
-              onDelete={(id) => handleDelete('comment', id)}
-            />
-          </div>
+    <AdminLayout>
+      <h1 className="text-3xl font-bold mb-6">Comments & Replies Management</h1>
+      
+      <div className="space-y-8">
+        <div className="glass-card p-6">
+          <h2 className="text-2xl font-semibold mb-4">Comments</h2>
+          <CommentTable 
+            data={comments}
+            onApprove={(id) => handleApprove('comment', id)}
+            onDelete={(id) => handleDelete('comment', id)}
+          />
+        </div>
 
-          <div className="glass-card p-6">
-            <h2 className="text-2xl font-semibold mb-4">Replies</h2>
-            <ReplyTable 
-              data={replies}
-              onApprove={(id) => handleApprove('reply', id)}
-              onDelete={(id) => handleDelete('reply', id)}
-            />
-          </div>
+        <div className="glass-card p-6">
+          <h2 className="text-2xl font-semibold mb-4">Replies</h2>
+          <ReplyTable 
+            data={replies}
+            onApprove={(id) => handleApprove('reply', id)}
+            onDelete={(id) => handleDelete('reply', id)}
+          />
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

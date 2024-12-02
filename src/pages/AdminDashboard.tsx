@@ -1,18 +1,16 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import Navbar from "@/components/layout/Navbar";
 import { supabase } from "@/supabaseClient";
 import { useQuery } from "@tanstack/react-query";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Fetch blog posts using React Query
   const { data: posts = [], refetch } = useQuery({
     queryKey: ["blog-posts"],
     queryFn: async () => {
@@ -26,12 +24,10 @@ const AdminDashboard = () => {
     },
   });
 
-  // Handle edit action
   const handleEdit = (postId: number) => {
     navigate(`/admin/edit/${postId}`);
   };
 
-  // Handle delete action
   const handleDelete = async (postId: number) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this post?");
 
@@ -53,69 +49,66 @@ const AdminDashboard = () => {
           title: "Success",
           description: "Post deleted successfully",
         });
-        refetch(); // Refresh the posts list
+        refetch();
       }
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-accent/30">
-      <Navbar />
-      <div className="container mx-auto py-8 px-4 flex-grow">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Blog Posts Management</h1>
-          <Button onClick={() => navigate("/admin")}>Create New Post</Button>
-        </div>
-
-        <div className="glass-card p-6">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Created At</TableHead>
-                <TableHead>Updated At</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {posts.map((post) => (
-                <TableRow key={post.id}>
-                  <TableCell className="font-medium">{post.title}</TableCell>
-                  <TableCell className="capitalize">{post.category}</TableCell>
-                  <TableCell>
-                    {new Date(post.created_at).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(post.updated_at).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleEdit(post.id)}
-                        className="h-8 w-8"
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleDelete(post.id)}
-                        className="h-8 w-8 text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+    <AdminLayout>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Blog Posts Management</h1>
+        <Button onClick={() => navigate("/admin")}>Create New Post</Button>
       </div>
-    </div>
+
+      <div className="glass-card p-6">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Updated At</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {posts.map((post) => (
+              <TableRow key={post.id}>
+                <TableCell className="font-medium">{post.title}</TableCell>
+                <TableCell className="capitalize">{post.category}</TableCell>
+                <TableCell>
+                  {new Date(post.created_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell>
+                  {new Date(post.updated_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleEdit(post.id)}
+                      className="h-8 w-8"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleDelete(post.id)}
+                      className="h-8 w-8 text-destructive hover:text-destructive"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </AdminLayout>
   );
 };
 

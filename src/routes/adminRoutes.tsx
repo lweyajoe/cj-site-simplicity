@@ -6,6 +6,7 @@ import CommentsManagement from "@/pages/CommentsManagement";
 import EditBlogPost from "@/pages/EditBlogPost";
 import EditComment from "@/pages/EditComment";
 import EditReply from "@/pages/EditReply";
+import CategoriesManagement from "@/pages/CategoriesManagement";
 
 export const adminRoutes: RouteObject[] = [
   {
@@ -53,6 +54,14 @@ export const adminRoutes: RouteObject[] = [
     element: (
       <ProtectedRoute>
         <EditReply />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/categories",
+    element: (
+      <ProtectedRoute>
+        <CategoriesManagement />
       </ProtectedRoute>
     ),
   },

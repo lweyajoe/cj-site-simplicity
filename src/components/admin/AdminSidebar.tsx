@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FileText, MessageSquare, Plus, Package } from "lucide-react";
+import { FileText, MessageSquare, Plus, Package, Grid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminSidebar = () => {
@@ -35,6 +35,12 @@ const AdminSidebar = () => {
             <Button variant="ghost" className="w-full justify-start">
               <Package className="mr-2 h-4 w-4" />
               Products Management
+            </Button>
+          </Link>
+          <Link to="/admin/categories">
+            <Button variant="ghost" className="w-full justify-start">
+              <Grid className="mr-2 h-4 w-4" />
+              Categories & Sectors
             </Button>
           </Link>
         </div>
