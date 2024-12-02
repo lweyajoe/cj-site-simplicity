@@ -15,7 +15,7 @@ const BlogCarousel = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("id, title, excerpt, created_at, slug")
+        .select("id, title, created_at, slug")
         .order("created_at", { ascending: false })
         .limit(3);
 
@@ -38,7 +38,6 @@ const BlogCarousel = () => {
             <Link to={`/blog/${post.slug}`}>
               <div className="blog-card">
                 <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                <p className="text-gray-600 mb-2">{post.excerpt}</p>
                 <span className="text-sm text-gray-500">
                   {new Date(post.created_at).toLocaleDateString()}
                 </span>
