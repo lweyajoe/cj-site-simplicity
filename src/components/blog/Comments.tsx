@@ -105,7 +105,7 @@ export const Comments = ({ postId }: { postId: number }) => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-white rounded-lg p-6 shadow-sm">
       <CommentForm postId={postId} type="comment" />
       
       <div className="space-y-6">
@@ -113,7 +113,7 @@ export const Comments = ({ postId }: { postId: number }) => {
           <p className="text-center text-muted-foreground">No comments yet. Be the first to comment!</p>
         ) : (
           comments.map((comment) => (
-            <div key={comment.id} className="glass-card p-6">
+            <div key={comment.id} className="bg-gray-50 rounded-lg p-6 shadow-sm">
               <div className="flex items-start justify-between">
                 <div>
                   <h4 className="font-semibold">{comment.author_name}</h4>
@@ -146,7 +146,7 @@ export const Comments = ({ postId }: { postId: number }) => {
                 {replies
                   .filter((reply) => reply.comment_id === comment.id)
                   .map((reply) => (
-                    <div key={reply.id} className="glass-card p-4">
+                    <div key={reply.id} className="bg-white rounded-lg p-4 shadow-sm">
                       <div>
                         <h4 className="font-semibold">{reply.author_name}</h4>
                         <p className="text-sm text-muted-foreground">

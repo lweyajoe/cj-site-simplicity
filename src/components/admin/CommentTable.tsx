@@ -60,7 +60,7 @@ export const CommentTable = ({ data, onApprove, onDelete }: CommentTableProps) =
                     variant="outline"
                     size="icon"
                     onClick={() => onApprove(comment.id)}
-                    className="h-8 w-8 text-green-600 hover:text-green-700"
+                    className="h-8 w-8 bg-green-600 hover:bg-green-700 text-white"
                   >
                     <Check className="h-4 w-4" />
                   </Button>
@@ -69,7 +69,7 @@ export const CommentTable = ({ data, onApprove, onDelete }: CommentTableProps) =
                   variant="outline"
                   size="icon"
                   onClick={() => navigate(`/admin/edit-comment/${comment.id}`)}
-                  className="h-8 w-8"
+                  className="h-8 w-8 bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -77,7 +77,7 @@ export const CommentTable = ({ data, onApprove, onDelete }: CommentTableProps) =
                   variant="outline"
                   size="icon"
                   onClick={() => onDelete(comment.id)}
-                  className="h-8 w-8 text-destructive hover:text-destructive"
+                  className="h-8 w-8 bg-red-600 hover:bg-red-700 text-white"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
