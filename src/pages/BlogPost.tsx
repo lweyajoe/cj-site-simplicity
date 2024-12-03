@@ -10,7 +10,7 @@ import { supabase } from "@/supabaseClient";
 import { Comments } from "@/components/blog/Comments";
 
 const BlogPost = () => {
-  const { id: slug } = useParams();
+  const { slug } = useParams();
   const categories = [
     "real estate",
     "tax",
@@ -49,7 +49,6 @@ const BlogPost = () => {
     },
   });
 
-  // Extract first image URL from content if exists
   const getFirstImageUrl = (content: string) => {
     const match = content?.match(/<img[^>]+src="([^">]+)"/);
     return match ? match[1] : '/placeholder.jpg';
@@ -90,6 +89,7 @@ const BlogPost = () => {
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-8">
           <h1 className="text-2xl font-bold">Post not found</h1>
+          <p>The blog post you're looking for doesn't exist or has been removed.</p>
         </main>
         <Footer />
       </div>

@@ -21,17 +21,15 @@ const ProductCategory = () => {
         .single();
       
       if (error) {
-        if (error.code === 'PGRST116') {
-          return null;
-        }
-        throw error;
+        console.error("Error fetching product type:", error);
+        return null;
       }
       return data;
     },
   });
 
   const { data: products, isLoading: loadingProducts } = useQuery({
-    queryKey: ["products", productType?.id],
+    queryKey: ["products", id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
@@ -39,12 +37,16 @@ const ProductCategory = () => {
           *,
           images:product_images(image_url)
         `)
-        .eq("product_type_id", productType?.id)
+        .eq("product_type_id", id)
         .order("created_at", { ascending: false });
-      if (error) throw error;
+
+      if (error) {
+        console.error("Error fetching products:", error);
+        return [];
+      }
       return data;
     },
-    enabled: !!productType?.id,
+    enabled: !!id,
   });
 
   const { data: productTypes } = useQuery({
@@ -60,7 +62,22 @@ const ProductCategory = () => {
   });
 
   if (loadingType || loadingProducts) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <div className="flex-grow container mx-auto px-4 py-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="h-64 bg-gray-200 rounded"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
   }
 
   if (!productType) {

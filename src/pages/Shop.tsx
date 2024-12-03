@@ -36,7 +36,22 @@ const Shop = () => {
   });
 
   if (loadingTypes || loadingProducts) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <div className="flex-grow container mx-auto px-4 py-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="h-64 bg-gray-200 rounded"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
   }
 
   return (
@@ -87,10 +102,7 @@ const Shop = () => {
             if (!typeProducts?.length) return null;
 
             return (
-              <section 
-                key={type.id} 
-                className="mb-16"
-              >
+              <section key={type.id} className="mb-16">
                 <h2 className="text-2xl font-semibold mb-6 text-primary">{type.name}</h2>
                 <ProductGrid products={typeProducts} />
                 <div className="mt-6 text-center">
