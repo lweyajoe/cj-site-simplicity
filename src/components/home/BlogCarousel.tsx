@@ -15,12 +15,20 @@ const BlogCarousel = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("id, title, created_at, slug")
+        .select("id, title, content, created_at, slug")
         .order("created_at", { ascending: false })
         .limit(3);
 
       if (error) throw error;
-      return data;
+      
+      // Create excerpts from content
+      return data.map(post => ({
+        ...post,
+        excerpt: post.content
+          .replace(/<[^>]*>/g, '') // Remove HTML tags
+          .slice(0, 150) // Take first 150 characters
+          .trim() + '...' // Add ellipsis
+      }));
     },
   });
 
@@ -38,6 +46,7 @@ const BlogCarousel = () => {
             <Link to={`/blog/${post.slug}`}>
               <div className="blog-card">
                 <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
+                <p className="text-gray-600 mb-2 line-clamp-3">{post.excerpt}</p>
                 <span className="text-sm text-gray-500">
                   {new Date(post.created_at).toLocaleDateString()}
                 </span>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FileText, MessageSquare, Plus, Package, Grid } from "lucide-react";
+import { FileText, MessageSquare, Plus, Package, Grid, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminSidebar = () => {
@@ -19,6 +19,12 @@ const AdminSidebar = () => {
               <Button variant="ghost" className="w-full justify-start">
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Comments
+              </Button>
+            </Link>
+            <Link to="/admin/leads">
+              <Button variant="ghost" className="w-full justify-start">
+                <Inbox className="mr-2 h-4 w-4" />
+                Leads Management
               </Button>
             </Link>
           </div>
