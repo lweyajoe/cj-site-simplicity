@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Product {
   id: number;
@@ -14,11 +18,27 @@ interface ProductGridProps {
 }
 
 const ProductGrid = ({ products }: ProductGridProps) => {
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
+  const handleAddToCart = (product: Product) => {
+    addToCart({
+      id: product.id.toString(),
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0]?.image_url,
+    });
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart.`,
+    });
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {products.map((product) => (
-        <Link key={product.id} to={`/shop/product/${product.id}`}>
-          <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+        <Card key={product.id} className="h-full hover:shadow-lg transition-shadow duration-300">
+          <Link to={`/shop/product/${product.id}`}>
             <CardContent className="p-0">
               <div className="aspect-video w-full relative overflow-hidden rounded-t-lg">
                 <img
@@ -39,13 +59,21 @@ const ProductGrid = ({ products }: ProductGridProps) => {
                 </p>
               </div>
             </CardContent>
-            <CardFooter className="p-4 pt-0">
-              <p className="text-lg font-bold text-primary">
-                ${product.price.toLocaleString()}
-              </p>
-            </CardFooter>
-          </Card>
-        </Link>
+          </Link>
+          <CardFooter className="p-4 pt-0 flex justify-between items-center">
+            <p className="text-lg font-bold text-primary">
+              ${product.price.toLocaleString()}
+            </p>
+            <Button
+              onClick={() => handleAddToCart(product)}
+              variant="secondary"
+              className="flex items-center gap-2"
+            >
+              <ShoppingCart className="h-4 w-4" />
+              Add to Cart
+            </Button>
+          </CardFooter>
+        </Card>
       ))}
     </div>
   );
