@@ -7,6 +7,7 @@ import Contact from "@/pages/Contact";
 import Services from "@/pages/Services";
 import Shop from "@/pages/Shop";
 import Cart from "@/pages/Cart";
+import Checkout from "@/pages/Checkout";
 import ProductDetail from "@/pages/ProductDetail";
 import ProductCategory from "@/pages/ProductCategory";
 import Login from "@/pages/Login";
@@ -43,6 +44,10 @@ export const publicRoutes = [
   {
     path: "/cart",
     element: <Cart />,
+  },
+  {
+    path: "/checkout",
+    element: <Checkout />,
   },
   {
     path: "/shop/product/:id",
