@@ -51,7 +51,7 @@ const Shop = () => {
               {productTypes?.map((type) => (
                 <li key={type.id}>
                   <Link
-                    to={`/shop/category/${type.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    to={`/shop/category/${type.id}`}
                     className="flex items-center text-gray-600 hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50"
                   >
                     <ChevronRight className="w-4 h-4 mr-2" />
@@ -82,23 +82,24 @@ const Shop = () => {
           {productTypes?.map((type) => {
             const typeProducts = products
               ?.filter((product) => product.product_type_id === type.id)
-              .slice(-3);
+              .slice(0, 3);
+
+            if (!typeProducts?.length) return null;
 
             return (
               <section 
                 key={type.id} 
-                id={type.name.toLowerCase().replace(/\s+/g, '-')} 
                 className="mb-16"
               >
                 <h2 className="text-2xl font-semibold mb-6 text-primary">{type.name}</h2>
-                <ProductGrid products={typeProducts || []} />
+                <ProductGrid products={typeProducts} />
                 <div className="mt-6 text-center">
-                  <Link to={`/shop/category/${type.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                  <Link to={`/shop/category/${type.id}`}>
                     <Button 
                       variant="outline"
                       className="hover:bg-primary hover:text-white transition-colors"
                     >
-                      See More {type.name}
+                      See More
                       <ChevronRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>

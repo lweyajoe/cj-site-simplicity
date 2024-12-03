@@ -9,20 +9,20 @@ import ProductGrid from "@/components/shop/ProductGrid";
 import { Link } from "react-router-dom";
 
 const ProductCategory = () => {
-  const { type } = useParams();
+  const { id } = useParams();
 
   const { data: productType, isLoading: loadingType } = useQuery({
-    queryKey: ["productType", type],
+    queryKey: ["productType", id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("product_types")
         .select("*")
-        .ilike("name", type?.replace(/-/g, ' ') || '')
+        .eq("id", id)
         .single();
       
       if (error) {
         if (error.code === 'PGRST116') {
-          return null; // Return null if no product type found
+          return null;
         }
         throw error;
       }
@@ -91,7 +91,7 @@ const ProductCategory = () => {
               {productTypes?.map((type) => (
                 <li key={type.id}>
                   <Link
-                    to={`/shop/category/${type.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    to={`/shop/category/${type.id}`}
                     className="flex items-center text-gray-600 hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50"
                   >
                     <ChevronRight className="w-4 h-4 mr-2" />
