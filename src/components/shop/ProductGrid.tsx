@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Check } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 interface Product {
   id: number;
@@ -18,20 +19,33 @@ interface ProductGridProps {
 }
 
 const ProductGrid = ({ products }: ProductGridProps) => {
-  const { addToCart } = useCart();
+  const { addToCart, state } = useCart();
   const { toast } = useToast();
+  const [addedItems, setAddedItems] = useState<Set<number>>(new Set());
 
   const handleAddToCart = (product: Product) => {
-    addToCart({
-      id: product.id.toString(),
-      name: product.name,
-      price: product.price,
-      image: product.images?.[0]?.image_url,
-    });
-    toast({
-      title: "Added to cart",
-      description: `${product.name} has been added to your cart.`,
-    });
+    const existingItem = state.items.find((item) => item.id === product.id.toString());
+
+    if (existingItem) {
+      toast({
+        title: "Already in Cart",
+        description: `${product.name} is already in your cart.`,
+        variant: "info",
+      });
+    } else {
+      addToCart({
+        id: product.id.toString(),
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        image: product.images?.[0]?.image_url,
+      });
+      toast({
+        title: "Added to Cart",
+        description: `${product.name} has been added to your cart.`,
+      });
+      setAddedItems((prev) => new Set(prev).add(product.id));
+    }
   };
 
   return (
@@ -66,11 +80,12 @@ const ProductGrid = ({ products }: ProductGridProps) => {
             </p>
             <Button
               onClick={() => handleAddToCart(product)}
-              variant="secondary"
+              variant={addedItems.has(product.id) ? "success" : "secondary"}
               className="flex items-center gap-2"
+              disabled={addedItems.has(product.id)}
             >
-              <ShoppingCart className="h-4 w-4" />
-              Add to Cart
+              {addedItems.has(product.id) ? <Check className="h-4 w-4" /> : <ShoppingCart className="h-4 w-4" />}
+              {addedItems.has(product.id) ? "Added" : "Add to Cart"}
             </Button>
           </CardFooter>
         </Card>
