@@ -54,7 +54,7 @@ export const publicRoutes = [
     element: <ProductDetail />,
   },
   {
-    path: "/shop/category/:category",
+    path: "/shop/category/:id",
     element: <ProductCategory />,
   },
   {
