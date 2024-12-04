@@ -12,6 +12,7 @@ import ProductDetail from "@/pages/ProductDetail";
 import ProductCategory from "@/pages/ProductCategory";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
+import ShopNotFound from "@/pages/ShopNotFound";
 import AccountingServices from "@/pages/AccountingServices";
 import AccountingSoftware from "@/pages/AccountingSoftware";
 import BusinessRegistration from "@/pages/BusinessRegistration";
@@ -70,11 +71,11 @@ export const publicRoutes = [
   },
   {
     path: "/shop",
-    element: <Shop />,
+    element: <ShopNotFound />,
   },
   {
     path: "/cart",
-    element: <Cart />,
+    element: <ShopNotFound />,
   },
   {
     path: "/checkout",
