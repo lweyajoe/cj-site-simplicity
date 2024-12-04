@@ -30,14 +30,13 @@ const ProductGrid = ({ products }: ProductGridProps) => {
       toast({
         title: "Already in Cart",
         description: `${product.name} is already in your cart.`,
-        variant: "info",
+        variant: "default",
       });
     } else {
       addToCart({
         id: product.id.toString(),
         name: product.name,
         price: product.price,
-        quantity: 1,
         image: product.images?.[0]?.image_url,
       });
       toast({
