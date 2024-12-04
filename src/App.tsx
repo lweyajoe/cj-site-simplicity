@@ -11,6 +11,7 @@ import { publicRoutes } from "./routes/publicRoutes";
 import { adminRoutes } from "./routes/adminRoutes";
 import { productManagementRoutes } from "./routes/productManagementRoutes";
 import NotFound from "./pages/NotFound";
+import ShopNotFound from "./pages/ShopNotFound";
 
 const queryClient = new QueryClient();
 const helmetContext = {};
