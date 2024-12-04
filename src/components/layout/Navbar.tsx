@@ -134,6 +134,10 @@ const Navbar = () => {
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
+            <Link to="/contact" className="nav-link flex items-center">
+              <Phone className="mr-1 h-4 w-4" />
+              Contact
+            </Link>
             {isAuthenticated && (
               <Button
                 variant="ghost"
