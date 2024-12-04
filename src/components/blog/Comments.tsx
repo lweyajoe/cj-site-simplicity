@@ -11,7 +11,7 @@ interface Comment {
   author_name: string;
   author_email: string;
   content: string;
-  created_at: string;
+  date: string; // Changed from created_at to date
   approval: number;
 }
 
@@ -21,7 +21,7 @@ interface Reply {
   author_name: string;
   author_email: string;
   content: string;
-  created_at: string;
+  date: string; // Changed from created_at to date
   approval: number;
 }
 
@@ -38,7 +38,7 @@ export const Comments = ({ postId }: { postId: number }) => {
           .select("*")
           .eq("blog_post_id", postId)
           .eq("approval", 1)
-          .order("created_at", { ascending: false });
+          .order("date", { ascending: false }); // Changed from created_at to date
 
         if (error) {
           console.error("Error loading comments:", error);
@@ -81,7 +81,7 @@ export const Comments = ({ postId }: { postId: number }) => {
           .select("*")
           .in("comment_id", commentIds)
           .eq("approval", 1)
-          .order("created_at", { ascending: true });
+          .order("date", { ascending: true }); // Changed from created_at to date
 
         if (error) {
           console.error("Error loading replies:", error);
@@ -118,7 +118,7 @@ export const Comments = ({ postId }: { postId: number }) => {
                 <div>
                   <h4 className="font-semibold">{comment.author_name}</h4>
                   <p className="text-sm text-muted-foreground">
-                    {new Date(comment.created_at).toLocaleDateString()}
+                    {new Date(comment.date).toLocaleDateString()}
                   </p>
                 </div>
               </div>
@@ -150,7 +150,7 @@ export const Comments = ({ postId }: { postId: number }) => {
                       <div>
                         <h4 className="font-semibold">{reply.author_name}</h4>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(reply.created_at).toLocaleDateString()}
+                          {new Date(reply.date).toLocaleDateString()}
                         </p>
                       </div>
                       <p className="mt-2">{reply.content}</p>
