@@ -11,6 +11,13 @@ import Checkout from "@/pages/Checkout";
 import ProductDetail from "@/pages/ProductDetail";
 import ProductCategory from "@/pages/ProductCategory";
 import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
+import AccountingServices from "@/pages/AccountingServices";
+import AccountingSoftware from "@/pages/AccountingSoftware";
+import BusinessRegistration from "@/pages/BusinessRegistration";
+import WealthManagement from "@/pages/WealthManagement";
+import FinancialModeling from "@/pages/FinancialModeling";
+import TaxServices from "@/pages/TaxServices";
 
 export const publicRoutes = [
   {
@@ -38,6 +45,30 @@ export const publicRoutes = [
     element: <Services />,
   },
   {
+    path: "/services/accounting-services",
+    element: <AccountingServices />,
+  },
+  {
+    path: "/services/accounting-software",
+    element: <AccountingSoftware />,
+  },
+  {
+    path: "/services/business-registration",
+    element: <BusinessRegistration />,
+  },
+  {
+    path: "/services/wealth-management",
+    element: <WealthManagement />,
+  },
+  {
+    path: "/services/financial-modeling",
+    element: <FinancialModeling />,
+  },
+  {
+    path: "/services/tax-services",
+    element: <TaxServices />,
+  },
+  {
     path: "/shop",
     element: <Shop />,
   },
@@ -60,5 +91,9 @@ export const publicRoutes = [
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ];

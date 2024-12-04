@@ -10,6 +10,7 @@ import { CartProvider } from "./contexts/CartContext";
 import { publicRoutes } from "./routes/publicRoutes";
 import { adminRoutes } from "./routes/adminRoutes";
 import { productManagementRoutes } from "./routes/productManagementRoutes";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const helmetContext = {};
@@ -54,6 +55,7 @@ const App = () => (
                     element={route.element}
                   />
                 ))}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
           </ErrorBoundary>
