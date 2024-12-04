@@ -4,7 +4,10 @@ import { supabase } from "@/supabaseClient";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Check } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -15,6 +18,9 @@ import {
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const { addToCart, state } = useCart();
+  const { toast } = useToast();
+  const [isAdded, setIsAdded] = useState(false);
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -32,6 +38,32 @@ const ProductDetail = () => {
       return data;
     },
   });
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    
+    const existingItem = state.items.find((item) => item.id === product.id.toString());
+
+    if (existingItem) {
+      toast({
+        title: "Already in Cart",
+        description: `${product.name} is already in your cart.`,
+        variant: "default",
+      });
+    } else {
+      addToCart({
+        id: product.id.toString(),
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0]?.image_url,
+      });
+      toast({
+        title: "Added to Cart",
+        description: `${product.name} has been added to your cart.`,
+      });
+      setIsAdded(true);
+    }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -80,9 +112,15 @@ const ProductDetail = () => {
               <p>{product?.description}</p>
             </div>
 
-            <Button className="w-full md:w-auto" size="lg">
-              <ShoppingCart className="mr-2 h-5 w-5" />
-              Add to Cart
+            <Button
+              onClick={handleAddToCart}
+              variant={isAdded ? "success" : "secondary"}
+              size="lg"
+              className="flex items-center gap-2"
+              disabled={isAdded}
+            >
+              {isAdded ? <Check className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />}
+              {isAdded ? "Added to Cart" : "Add to Cart"}
             </Button>
           </div>
         </div>

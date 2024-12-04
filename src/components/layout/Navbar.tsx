@@ -89,7 +89,7 @@ const Navbar = () => {
                   )}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-80">
+              <DropdownMenuContent align="end" className="w-80 bg-white">
                 <div className="p-4">
                   <h3 className="font-semibold mb-2">Shopping Cart</h3>
                   {cartState.items.length === 0 ? (
@@ -111,7 +111,6 @@ const Navbar = () => {
                           </div>
                         ))}
                       </div>
-                      <DropdownMenuSeparator />
                       <div className="flex justify-between items-center mb-4">
                         <span className="font-semibold">Total:</span>
                         <span className="font-semibold">
@@ -127,7 +126,7 @@ const Navbar = () => {
                       </Button>
                     </Link>
                     <Link to="/checkout">
-                      <Button className="w-full">
+                      <Button className="w-full" variant="secondary">
                         Checkout
                       </Button>
                     </Link>
@@ -135,10 +134,6 @@ const Navbar = () => {
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Link to="/contact" className="nav-link flex items-center">
-              <Phone className="mr-1 h-4 w-4" />
-              Contact
-            </Link>
             {isAuthenticated && (
               <Button
                 variant="ghost"
