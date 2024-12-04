@@ -79,7 +79,7 @@ export const publicRoutes = [
   },
   {
     path: "/checkout",
-    element: <Checkout />,
+    element: <ShopNotFound />,
   },
   {
     path: "/shop/product/:id",
