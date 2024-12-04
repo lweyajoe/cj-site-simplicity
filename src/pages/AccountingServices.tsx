@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ServiceAdCarousel from "@/components/ads/ServiceAdCarousel";
 
 const accountingServices = [
   {
@@ -58,6 +59,8 @@ const AccountingServices = () => {
             </div>
           </div>
         </section>
+
+        <ServiceAdCarousel />
       </main>
       <Footer />
     </div>
