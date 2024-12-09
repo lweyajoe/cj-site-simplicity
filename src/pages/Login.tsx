@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     
     // Check hardcoded credentials
-    if (email === "joseph.lweya@gmail.com" && password === "Samwa@Invest!") {
+    if (email === "logged@login.com" && password === "Blogged2024!") {
       // Store auth state in localStorage
       localStorage.setItem("isAuthenticated", "true");
       toast({
